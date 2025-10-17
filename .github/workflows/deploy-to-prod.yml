@@ -1,4 +1,4 @@
-name: Deploy to prod server
+name: Deploy to Prod Server
 
 on:
   push:
@@ -6,145 +6,101 @@ on:
       - main
 
 jobs:
-  copy-files-to-aws:
+  deploy:
     runs-on: ubuntu-latest
-
     steps:
+      # Step 1: Checkout repo
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
-      - name: Create target directory on EC2
-        
+      # Step 2: Create target directory on EC2
+      - name: Create target directory
+        uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SERVER_IP }}
           username: ubuntu
           key: ${{ secrets.SSH_KEY }}
+          port: 22
           script: |
             sudo mkdir -p /home/ubuntu/autopilotx-prod
             sudo chown -R ubuntu:ubuntu /home/ubuntu/autopilotx-prod
             sudo chmod -R 755 /home/ubuntu/autopilotx-prod
 
-      - name: Copy files to EC2
-        
+      # Step 3: Copy project files to EC2
+      - name: Copy project files
+        uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.SERVER_IP }}
           username: ubuntu
           key: ${{ secrets.SSH_KEY }}
+          port: 22
           source: "."
           target: "/home/ubuntu/autopilotx-prod"
 
-      - name: Create .env file from Secrets
-        shell: bash
+      # Step 4: Create .env locally and copy to EC2
+      - name: Create .env file
         run: |
           echo "${{ secrets.PROD_ENV }}" > .env
 
-      - name: Copy .env file to server
-        
+      - name: Copy .env to EC2
+        uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.SERVER_IP }}
           username: ubuntu
           key: ${{ secrets.SSH_KEY }}
+          port: 22
           source: ".env"
           target: "/home/ubuntu/autopilotx-prod/"
-
-      - name: Copy .env file to client folder
-        
-        with:
-          host: ${{ secrets.SERVER_IP }}
-          username: ubuntu
-          key: ${{ secrets.SSH_KEY }}
-          source: ".env"
-          target: "/home/ubuntu/autopilotx-prod/client"
 
       - name: Remove local .env file
         run: rm -f .env
 
-  deploy-service:
-    runs-on: ubuntu-latest
-    needs: copy-files-to-aws
-
-    steps:
-      - name: Update package list on EC2
-        
+      # Step 5: Install Node.js, NPM, Nginx and dependencies
+      - name: Setup environment and install dependencies
+        uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SERVER_IP }}
           username: ubuntu
           key: ${{ secrets.SSH_KEY }}
+          port: 22
           script: |
+            # Update package list
             sudo apt update
 
-      - name: Install Nginx on EC2 (if not installed)
-         
-        with:
-          host: ${{ secrets.SERVER_IP }}
-          username: ubuntu
-          key: ${{ secrets.SSH_KEY }}
-          script: |
+            # Install Nginx if missing
             if ! command -v nginx > /dev/null; then
-              echo "Installing Nginx..."
               sudo apt install nginx -y
-            else
-              echo "Nginx already installed."
             fi
 
-      - name: Install NPM on EC2 (if not installed)
-        
-        with:
-          host: ${{ secrets.SERVER_IP }}
-          username: ubuntu
-          key: ${{ secrets.SSH_KEY }}
-          script: |
+            # Install NPM if missing
             if ! command -v npm > /dev/null; then
-              echo "Installing NPM..."
               sudo apt install npm -y
-            else
-              echo "NPM already installed."
             fi
 
-           
-      - name: Install Node.js 20.x on EC2 (if not version 20+)
-        
-        with:
-          host: ${{ secrets.SERVER_IP }}
-          username: ubuntu
-          key: ${{ secrets.SSH_KEY }}
-          script: |
+            # Install Node.js 20.x if missing or version < 20
             NODE_VERSION=$(node -v 2>/dev/null || echo "none")
             if [[ "$NODE_VERSION" == "none" || "$NODE_VERSION" < "v20" ]]; then
-              echo "Installing Node.js 20.x..."
               curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
               sudo apt install -y nodejs
-            else
-              echo "Node.js $NODE_VERSION already installed."
             fi
             node -v
             npm -v
 
-      - name: Install Node dependencies on EC2
-        
-        with:
-          host: ${{ secrets.SERVER_IP }}
-          username: ubuntu
-          key: ${{ secrets.SSH_KEY }}
-          script: |
-            set -e  # stop script if any command fails
+            # Install Node dependencies
             cd /home/ubuntu/autopilotx-prod
             if [ -f package.json ]; then
-              echo "Found package.json. Running npm install..."
               npm install
-            else
-              echo "package.json not found in /home/ubuntu/autopilotx-prod"
-              exit 1
             fi
 
-
-      - name: Restart nginx
-        
+      # Step 6: Build and restart Nginx
+      - name: Build and restart Nginx
+        uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SERVER_IP }}
           username: ubuntu
           key: ${{ secrets.SSH_KEY }}
+          port: 22
           script: |
             cd /home/ubuntu/autopilotx-prod
             npm run build
-            sudo service nginx restart
+            sudo systemctl restart nginx
