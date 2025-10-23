@@ -1,13 +1,12 @@
 import { useState, useEffect } from "react";
+import { Logo } from "./Logo";
 import { useAuth } from "@/lib/auth";
 import { Lock, Settings, Home, BarChart, LineChart, History, Youtube, Instagram, MessageCircle, LogOut, ChartNoAxesCombined, UserRoundCog, Shield, Layers, ChartColumnDecreasing } from "lucide-react";
 import { clearLocalStorage, clearSessionStorage } from "@/lib/sessionStorageUtils";
 import { apiRequest } from "@/lib/queryClient";
-import Logo from '../assets/autopilotx_logo.jpg'
 
 export default function Sidebar() {
   const { user, signout } = useAuth();
-  // role can be 'user', 'admin', or 'superadmin'
   const [role, setRole] = useState<string>("user");
   const location = window.location.pathname;
 
@@ -23,7 +22,6 @@ export default function Sidebar() {
           );
 
           console.log("User role response:", response);
-          // Set role state based on response.role
           if (response?.role === "superadmin" || response?.role === "admin") {
             setRole(response.role);
           } else {
@@ -43,14 +41,10 @@ export default function Sidebar() {
   const handleLogout = async () => {
     try {
       await signout();
-
-      // Clear any additional storage if needed
       localStorage.removeItem('broker_name');
       localStorage.removeItem('api_verified');
       clearSessionStorage();
       clearLocalStorage();
-
-      // Redirect to sign-in page after logout
       window.location.href = '/signin';
     } catch (error) {
       console.error('Logout error:', error);
@@ -65,7 +59,6 @@ export default function Sidebar() {
     { name: "Positions", path: "/positions", icon: <Layers className="w-5 h-5 mr-2" /> },
     { name: "History", path: "/history", icon: <History className="w-5 h-5 mr-2" /> },
 
-    // Only show admin-notification-page if user is admin or superadmin
     ...(role === "admin" || role === "superadmin" ? [{ name: "Notifications", path: "/admin/notifications", icon: <Settings className="w-5 h-5 mr-2" /> }] : []),
     ...(role === "admin" || role === "superadmin" ? [{ name: "Approvals", path: "/admin/approvals", icon: <UserRoundCog className="w-5 h-5 mr-2" /> }] : []),
     ...(role === "admin" || role === "superadmin" ? [{ name: "Analytics", path: "/admin/analytics", icon: <ChartNoAxesCombined className="w-5 h-5 mr-2" /> }] : []),
@@ -85,40 +78,35 @@ export default function Sidebar() {
   ];
 
   return (
-    <aside className="w-[14rem] fixed inset-y-0 bg-[#171f34] text-white hidden md:flex flex-col z-10">
+    // --- CHANGE: Updated main background and text colors ---
+    <aside className="w-[14rem] fixed inset-y-0 bg-background text-foreground hidden md:flex flex-col z-10">
       <div className="p-4">
-        <img src={Logo} alt="Logo" className="w-20 h-20" />
+        <Logo />
       </div>
 
-      <div className="mt-6 px-4 text-sm text-white">Overview</div>
-      <nav className="mt-2 space-y-1 px-2">
+      {/* --- CHANGE: Updated text color --- */}
+      <div className="mt-6 px-4 text-sm text-foreground font-bold">Overview</div>
+      {/* --- CHANGE: Updated text color --- */}
+      <nav className="mt-2 space-y-1 px-2 text-foreground font-medium">
         {navItems.map((item) => (
           <a
             key={item.path}
             href={item.path}
             onClick={(e) => {
-              if (item.name === "History") {   // only check for History
+              if (item.name === "History") {
                 e.preventDefault();
                 const brokerName = sessionStorage.getItem("broker_name");
-
                 if (brokerName === "coindcx") {
-                  // redirect to external History page for coindcx
                   window.open("https://coindcx.com/stats/futures/positions", "_blank");
                   return;
                 }
               }
-
-              // default navigation for everything else
               window.location.href = item.path;
             }}
-            // onClick={(e) => {
-            //   e.preventDefault();
-
-            //   window.location.href = item.path;
-            // }}
+            // --- CHANGE: Updated active, inactive, and hover styles ---
             className={`flex items-center px-3 py-2 rounded-full ${location === item.path
-              ? "bg-[#935fcd] text-white"
-              : "text-white hover:bg-[#5b2b92]"
+              ? "bg-[#06a57f] text-primary-foreground"
+              : "text-foreground hover:bg-muted"
               }`}
           >
             {item.icon}
@@ -127,16 +115,19 @@ export default function Sidebar() {
         ))}
       </nav>
 
-      <div className="mt-auto ">
-        <div className="px-4 text-sm text-white mb-2">Join Us</div>
-        <div className="bg-[#171f34] rounded-lg mx-2 p-4 space-y-3">
+      <div className="mt-auto">
+        {/* --- CHANGE: Updated text color --- */}
+        <div className="px-4 text-sm text-foreground font-bold mb-2">Join Us</div>
+        {/* --- CHANGE: Updated background color --- */}
+        <div className="bg-muted rounded-lg mx-2 p-4 space-y-3">
           {socialLinks.map((link) => (
             <a
               key={link.name}
               href={link.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center text-sm text-white hover:text-blue-600"
+              // --- CHANGE: Updated text and hover colors ---
+              className="flex items-center text-sm text-foreground font-medium hover:text-[#02b589]"
             >
               {link.icon}
               {link.name}
@@ -153,7 +144,8 @@ export default function Sidebar() {
                 e.preventDefault();
                 handleLogout();
               } : undefined}
-              className="flex items-center text-sm text-white hover:text-blue-600"
+              // --- CHANGE: Updated text and hover colors ---
+              className="flex items-center text-sm text-foreground font-medium hover:text-[#02b589]"
             >
               {link.icon}
               {link.name}

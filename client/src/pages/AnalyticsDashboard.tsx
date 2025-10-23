@@ -9,7 +9,7 @@ import Lowheader from "@/components/Lowheader"
 import { apiRequest } from "@/lib/queryClient"
 import { useToast } from "@/hooks/use-toast"
 import { useLocation } from "wouter"
-import CryptoMarketOverview from "@/components/CryptoMarketOverview"
+import CryptoMarketOverview from "@/components/CryptoMarketOverview";
 
 // Spinner for loading states
 const spinner = (

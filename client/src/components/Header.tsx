@@ -1,10 +1,10 @@
 import React, { useEffect, useState, useRef } from "react";
-import { Menu, Phone, MessageSquare, Bell, X, Check } from "lucide-react";
+import { Menu, Phone, MessageSquare, Bell, X, Check, Sun, Moon } from "lucide-react";
 import { useAuth } from "@/lib/auth";
 import { getSessionItem } from "@/lib/sessionStorageUtils";
 import { useQuery } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
-
+import { useTheme } from "@/context/ThemeProvider";
 
 
 type NotificationType = 'success' | 'warning' | 'info' | 'error';
@@ -53,6 +53,8 @@ const useNotifications = (email: string | undefined) => {
 
 export default function Header() {
   const { user } = useAuth();
+  // --- CHANGE: Get theme and toggle function from the global context ---
+  const { theme, toggleTheme } = useTheme();
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [userName, setUserName] = useState("User");
@@ -172,7 +174,6 @@ export default function Header() {
 
       if (!res.ok) {
         console.error(`Failed to dismiss notification ${id}`);
-        // setRemovingIds((prev) => prev.filter((nid) => nid !== id)); //rollback
       } else {
         setNotifications((prev) => prev.filter((n) => n.id !== id));
       }
@@ -181,23 +182,42 @@ export default function Header() {
     }
   };
 
+  // --- CHANGE: Removed incorrect local theme state ---
+
   return (
-    <header className="bg-[#171f34] border-b border-[#171f34] sticky top-0 z-10">
+    // --- CHANGE: Applied theme-aware background and border ---
+    <header className="bg-background border-b border-border sticky top-0 z-10">
       <div className="flex items-center justify-between px-4 md:px-6 py-3">
         <div className="flex items-center">
           <button
-            className="text-white hover:text-neutral-700 md:hidden mr-2"
+            className="text-muted-foreground hover:text-foreground md:hidden mr-2"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
             <Menu className="w-6 h-6" />
           </button>
         </div>
 
+
         <div className="flex items-center space-x-4">
+          {/* --- CHANGE: Applied theme-aware styles to the button and icons --- */}
+          <div className="bg-muted hover:bg-[#1a785f] w-7 h-7 rounded-full flex items-center justify-center">
+            <button
+              onClick={toggleTheme}
+              className="text-foreground transition-colors"
+              aria-label="Toggle theme"
+            >
+              {theme === 'light' ? (
+                <Moon className="w-5 h-5" />
+              ) : (
+                <Sun className="w-5 h-5" />
+              )}
+            </button>
+          </div>
+
           <div className="relative" ref={notificationRef}>
-            <div className="bg-[#bcc5fb] w-7 h-7 rounded-full">
+            <div className="bg-[#1a785f] w-7 h-7 rounded-full">
               <button
-                className="relative text-white hover:text-white p-1"
+                className="relative text-white p-1"
                 onClick={toggleNotifications}
                 aria-label="Notifications"
               >
@@ -210,12 +230,13 @@ export default function Header() {
               </button>
             </div>
             {showNotifications && (
-              <div className="fixed top-0 right-0 h-full w-80 bg-white shadow-lg z-50">
-                <div className="flex justify-between items-center p-4 border-b">
-                  <h3 className="text-lg font-medium">Notifications</h3>
+              // --- CHANGE: Applied theme-aware styles to notification panel ---
+              <div className="bg-card fixed top-0 right-0 h-full w-80 shadow-lg z-50">
+                <div className="flex justify-between items-center p-4 border-b border-border">
+                  <h3 className="text-lg font-medium text-foreground">Notifications</h3>
                   <button
                     onClick={() => setShowNotifications(false)}
-                    className="text-gray-400 hover:text-gray-600"
+                    className="text-muted-foreground hover:text-foreground"
                   >
                     <X className="h-5 w-5" />
                   </button>
@@ -223,7 +244,7 @@ export default function Header() {
                 <div className="h-[calc(100%-60px)] overflow-y-auto">
                   <div className="p-4">
                     {notificationsLoading ? (
-                      <p className="text-sm text-gray-500 text-center mt-4">Loading notifications...</p>
+                      <p className="text-sm text-muted-foreground text-center mt-4">Loading notifications...</p>
                     ) : notificationsError ? (
                       <div className="text-center mt-4">
                         <p className="text-sm text-red-500 mb-2">Error: {notificationsError.message}</p>
@@ -235,21 +256,21 @@ export default function Header() {
                         </button>
                       </div>
                     ) : notifications.length === 0 ? (
-                      <p className="text-sm text-gray-500 text-center mt-4">No notifications.</p>
+                      <p className="text-sm text-muted-foreground text-center mt-4">No notifications.</p>
                     ) : (
                       notifications.map((notification) => (
-                        <div key={notification.id} className="flex items-start justify-between mb-4 border-b pb-2">
+                        <div key={notification.id} className="flex items-start justify-between mb-4 border-b border-border pb-2">
                           <div className="flex items-start gap-2">
                             {getNotificationIcon(notification.type)}
                             <div className="flex-1">
                               <h4 className={`font-medium ${!notification.read ? "font-bold" : "font-normal"}`}>
                                 {notification.title}</h4>
-                              <p className="text-sm text-gray-600">{notification.message}</p>
-                              <span className="text-xs text-gray-400">{notification.time}</span>
+                              <p className="text-sm text-muted-foreground">{notification.message}</p>
+                              <span className="text-xs text-muted-foreground">{notification.time}</span>
                             </div>
                           </div>
                           <button
-                            className="text-gray-400 hover:text-gray-600"
+                            className="text-muted-foreground hover:text-foreground"
                             onClick={() => removeNotification(notification.id)}
                             aria-label="Remove notification"
                           >
@@ -277,8 +298,8 @@ export default function Header() {
                 </div>
               )}
               <div className="text-sm text-left hidden sm:block">
-                <div className="font-medium">{user?.identities?.[0]?.identity_data?.full_name || user?.user_metadata?.full_name || userName || "User"}</div>
-                <div className="text-xs text-neutral-500">
+                <div className="font-medium text-foreground">{user?.identities?.[0]?.identity_data?.full_name || user?.user_metadata?.full_name || userName || "User"}</div>
+                <div className="text-xs text-muted-foreground">
                   {user?.email || "user@example.com"}
                 </div>
               </div>
@@ -289,14 +310,11 @@ export default function Header() {
 
       {/* Mobile menu - would be implemented in a real app */}
       {mobileMenuOpen && (
-        <div className="md:hidden bg-white border-b border-neutral-200 px-4 py-2">
+        // --- CHANGE: Applied theme-aware styles to mobile menu ---
+        <div className="md:hidden bg-background border-b border-border px-4 py-2">
           {/* Mobile menu items */}
         </div>
       )}
     </header>
   );
 }
-
-/* 
-// Removed local useQuery definition because it shadows the real useQuery from @tanstack/react-query.
-*/

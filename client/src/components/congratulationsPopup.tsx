@@ -7,20 +7,19 @@ interface CongratulationsPopupProps {
 }
 
 export default function CongratulationsPopup({ isOpen, onClose, message = 'deployed' }: CongratulationsPopupProps) {
-    if (!isOpen) {
-        return null;
-    }
+    if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-            <div className="bg-white rounded-2xl shadow-xl max-w-md w-full mx-4 overflow-hidden">
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center p-4 z-50">
+            <div className="bg-gradient-to-b from-[#12002b] via-[#2a003f] to-[#3f0055] rounded-2xl shadow-xl max-w-md w-full mx-4 overflow-hidden border border-purple-700">
+                
                 {/* Header */}
                 <div className="px-8 pt-8 pb-4">
-                    <h1 className="text-2xl font-semibold text-gray-900 text-left">Congratulations!</h1>
+                    <h1 className="text-2xl font-semibold text-purple-200 text-left">Congratulations!</h1>
                 </div>
 
                 {/* Divider */}
-                <div className="border-t border-gray-200 mx-8"></div>
+                <div className="border-t border-purple-700 mx-8"></div>
 
                 {/* Content */}
                 <div className="px-8 py-8 text-center">
@@ -70,7 +69,7 @@ export default function CongratulationsPopup({ isOpen, onClose, message = 'deplo
                     </div>
 
                     {/* Message */}
-                    <p className="text-gray-700 text-lg leading-relaxed mb-8">
+                    <p className="text-purple-100 text-lg leading-relaxed mb-8">
                         Hey! We have successfully {message} the strategy.
                     </p>
                 </div>
@@ -78,7 +77,7 @@ export default function CongratulationsPopup({ isOpen, onClose, message = 'deplo
                 {/* Button */}
                 <div className="px-8 pb-8">
                     <Button
-                        className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-4 rounded-full text-lg h-auto"
+                        className="w-full bg-purple-600 hover:bg-purple-700 text-white font-medium py-4 rounded-full text-lg h-auto"
                         onClick={onClose}
                     >
                         Okay

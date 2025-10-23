@@ -4,32 +4,38 @@ import Aurora from '../components/ui/aurora';
 import Particles from '../components/ui/particles';
 import Orb from '../components/ui/orb';
 import logo from '../assets/autopilotx_logo.jpg';
-import icon from '../assets/autopilotx_icon.jpg'
+import icon from '../assets/logo.png';
+import heroimage from '../assets/herobanner.png';
+import "../types/HeroSection.css"; 
+import midbanner from '../assets/dashboard.jpeg'
 
 
 // Header component
 const Header = () => (
-  <header className="px-8 py-4">
-    <nav className="flex items-center justify-between text-white">
-      <div className="flex items-center gap-8">
-        <div className="flex items-center gap-2">
-          <span className="text-2xl font-bold">Autopilotx</span>
-        </div>
-        {/* <div className="hidden md:flex items-center gap-6 text-sm text-slate-300">
-          <a href="#" className="hover:text-white transition-colors">About</a>
-          <a href="#" className="hover:text-white transition-colors">Integrations</a>
-          <a href="#" className="hover:text-white transition-colors">Pricing</a>
-          <a href="#" className="hover:text-white transition-colors">Customers</a>
-          <a href="#" className="hover:text-white transition-colors">Changelog</a>
-        </div> */}
+  <header className="w-full fixed top-0 left-0 z-50 bg-[#0b0f1a]/80 backdrop-blur-md px-6 sm:px-8 py-3 md:py-4">
+    <nav className="flex items-center justify-between max-w-7xl mx-auto">
+      
+      {/* Logo */}
+      <div className="flex items-center gap-4 md:gap-6">
+        <img
+          src={icon}
+          alt="AutopilotX Logo"
+          className="h-14 sm:h-16 md:h-20 w-auto object-contain"
+        />
       </div>
-      <div className="flex items-center gap-4 text-sm">
+
+      {/* Buttons */}
+      <div className="flex items-center gap-3 md:gap-4 text-sm">
         <button
-          onClick={() => window.location.href = "/signin"}
-          className="hidden sm:block text-slate-300 hover:text-white transition-colors">Log in</button>
+          onClick={() => (window.location.href = "/signin")}
+          className="hidden sm:inline-block text-slate-300 hover:text-white transition-colors px-2 py-1 md:px-3 md:py-1.5"
+        >
+          Log in
+        </button>
         <button
-          onClick={() => window.location.href = "/signup"}
-          className="bg-slate-800/80 hover:bg-slate-700 text-white px-4 py-2 rounded-md transition-colors flex items-center gap-2">
+          onClick={() => (window.location.href = "/signup")}
+          className="bg-[#06a57f] hover:bg-[#05b289] text-white px-3 py-1.5 md:px-4 md:py-2 rounded-md transition-colors flex items-center gap-2"
+        >
           Sign up
         </button>
       </div>
@@ -37,108 +43,306 @@ const Header = () => (
   </header>
 );
 
-// Hero section component
-const HeroSection = () => (
-  <div className="flex flex-col items-center justify-center text-center py-20 md:py-32 px-4 relative z-10">
-    <div className="mb-6">
-      <span className="bg-purple-600/20 border border-purple-400/30 text-purple-300 text-xs font-medium px-4 py-1.5 rounded-full">
-        Welcome to the Future of Trading
-      </span>
+
+
+const RippleGrid = () => {
+  const lines = 7; // 7x7 grid
+  return (
+    <div className="absolute inset-0 grid-container -z-10 slide-in-right">
+      {/* Vertical lines */}
+      {Array.from({ length: lines }).map((_, i) => (
+        <div
+          key={`v-${i}`}
+          className="absolute top-0 bottom-0 w-1 bg-[#06a57f] line-animate"
+          style={{ left: `${(i / (lines - 1)) * 100}%` }}
+        />
+      ))}
+
+      {/* Horizontal lines */}
+      {Array.from({ length: lines }).map((_, i) => (
+        <div
+          key={`h-${i}`}
+          className="absolute left-0 right-0 h-1 bg-[#06a57f] line-animate"
+          style={{ top: `${(i / (lines - 1)) * 100}%` }}
+        />
+      ))}
     </div>
-    <h1 className="text-4xl md:text-6xl font-bold text-white leading-tight tracking-tight max-w-3xl">
-      Unlock Your Trading Potential with Automated Strategies
-    </h1>
-    <p className="mt-6 text-lg text-slate-400 max-w-2xl">
-      Leverage our pre-built, backtested trading strategies to navigate the markets on autopilot. No coding, no guesswork, just results.
-    </p>
-    <div className="mt-8 flex flex-col sm:flex-row items-center gap-4">
+  );
+};
+
+const MidBannerSection = () => (
+  <section className="relative bg-[#0d0f13] w-full h-[60vh] md:h-[70vh] flex justify-center items-center overflow-hidden mb-20">
+    <img
+      src={midbanner} // replace with your image import/path
+      alt="Mid Banner"
+      className="max-w-[95%] max-h-[95%] object-cover rounded-xl"
+    />
+  </section>
+);
+
+
+const HeroSection = () => (
+  <section className="relative flex flex-col md:flex-row items-center justify-between px-8 md:px-16 lg:px-24 bg-[#0b0f1a] min-h-screen z-10 mt-19">
+    {/* Left Content */}
+    <div className="flex-1 text-left space-y-5 relative z-10 slide-in-left">
+      <div>
+        <span className="bg-[#06a57f1a] text-[#06a57f] text-sm font-medium px-4 py-2 rounded-full inline-block">
+          Future of crypto trading
+        </span>
+      </div>
+
+      <h1 className="text-4xl md:text-5xl font-bold text-white leading-tight">
+        Fast and Secure <br /> Cryptocurrency Exchange
+      </h1>
+
+      <p className="text-base md:text-lg text-slate-400 max-w-md">
+        Trade cryptocurrencies with ease, security, and advanced features on our
+        cutting-edge platform.
+      </p>
+
       <button
-        onClick={() => window.location.href = "/signin"}
-        className="bg-white text-slate-900 hover:bg-slate-200 font-medium px-6 py-3 rounded-md transition-colors w-full sm:w-auto flex items-center justify-center gap-2">
-        Get Started
+        onClick={() =>
+          window.scrollTo({ top: window.innerHeight, behavior: "smooth" })
+        }
+        className="mt-4 bg-gradient-to-r from-[#06a57f] to-[#05b289] text-white font-medium px-6 py-3 rounded-md transition-transform hover:scale-[1.02]"
+      >
+        Learn More
       </button>
-      <button className="bg-transparent border border-slate-700 text-slate-300 hover:bg-slate-800 font-medium px-6 py-3 rounded-md transition-colors w-full sm:w-auto flex items-center justify-center gap-2">
-        <Book size={16} />
-        Read the docs
-      </button>
+    </div>
+
+    {/* Right Image with Ripple Grid */}
+    <div className="flex-1 flex justify-center mt-10 md:mt-0 relative z-10 slide-in-right">
+      <RippleGrid />
+      <img
+        src={heroimage}
+        alt="Crypto Trading Dashboard"
+        className="w-full max-w-lg md:max-w-xl object-contain relative z-20"
+      />
+    </div>
+  </section>
+);
+
+
+const strategies = [
+  {
+    id: 1,
+    pair: "BTC/USDT",
+    name: "BlackBox Strategy 1",
+    description:
+      "A dynamic Bitcoin trading strategy built for speed, precision, and consistency.",
+    winRate: 67,
+    maxDrawdown: 40,
+    totalTrades: 968,
+  },
+  {
+    id: 2,
+    pair: "ETH/USDT",
+    name: "BlackBox Strategy 2",
+    description:
+      "A fast-paced Ethereum scalping strategy designed to capture quick, short-term profits.",
+    winRate: 72,
+    maxDrawdown: 32,
+    totalTrades: 1045,
+  },
+];
+
+const PerformanceGraph = ({ showMarker = false }: { showMarker?: boolean }) => (
+  <div className="px-3 pt-4 pb-2 rounded-t-2xl relative h-[140px] bg-[#16181D]">
+    <svg
+      viewBox="0 0 300 200"
+      xmlns="http://www.w3.org/2000/svg"
+      className="w-full h-full"
+    >
+      <defs>
+        <linearGradient id="greenGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stopColor="#06a57f" stopOpacity="0.6" />
+          <stop offset="50%" stopColor="#05b289" stopOpacity="0.4" />
+          <stop offset="100%" stopColor="#05b288" stopOpacity="0.1" />
+        </linearGradient>
+      </defs>
+
+      <path
+        d="M 50,180 L 80,160 L 120,140 L 170,40 L 200,130 L 240,80 L 280,110 L 280,190 L 50,190 Z"
+        fill="url(#greenGradient)"
+      />
+      <path
+        d="M 50,180 L 80,160 L 120,140 L 170,40 L 200,130 L 240,80 L 280,110"
+        fill="none"
+        stroke="#05b289"
+        strokeWidth="3"
+      />
+
+      {showMarker && (
+        <g>
+          <line
+            x1="210"
+            y1="20"
+            x2="210"
+            y2="190"
+            stroke="#05b288"
+            strokeWidth="2"
+            strokeDasharray="4"
+          />
+          <rect x="190" y="5" width="40" height="18" rx="4" fill="#05b289" />
+          <text x="210" y="19" fontSize="10" fill="white" textAnchor="middle">
+            1 Mar
+          </text>
+        </g>
+      )}
+    </svg>
+  </div>
+);
+
+const StrategiesSection = () => (
+  <div className="relative min-h-[70vh] bg-[#0d0f13] text-white flex flex-col items-center justify-center px-8 overflow-hidden">
+    {/* Background Lines with Glowing Dots */}
+    <div className="absolute inset-0 opacity-30 pointer-events-none">
+      <svg
+        className="w-full h-full"
+        preserveAspectRatio="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        {/* === LINE 1 === */}
+        <polyline
+          points="0,300 200,250 400,280 600,240 800,300 1000,250 1200,280 1400,260 1600,300 1800,270"
+          fill="none"
+          stroke="#F7931A"
+          strokeWidth="2"
+        />
+        {[0, 200, 400, 600, 800, 1000, 1200, 1400, 1600, 1800].map((x, i) => {
+          const yValues = [300, 250, 280, 240, 300, 250, 280, 260, 300, 270];
+          return (
+            <circle
+              key={`dot1-${i}`}
+              cx={x}
+              cy={yValues[i]}
+              r="5"
+              fill="#FFD27F"
+              style={{ filter: 'drop-shadow(0 0 8px #F7931A)' }}
+              className="animate-pulse"
+            />
+          );
+        })}
+
+        {/* === LINE 2 === */}
+        <polyline
+          points="0,350 200,310 400,330 600,290 800,360 1000,310 1200,340 1400,320 1600,350 1800,315"
+          fill="none"
+          stroke="#05b288"
+          strokeWidth="2"
+        />
+        {[0, 200, 400, 600, 800, 1000, 1200, 1400, 1600, 1800].map((x, i) => {
+          const yValues = [350, 310, 330, 290, 360, 310, 340, 320, 350, 315];
+          return (
+            <circle
+              key={`dot2-${i}`}
+              cx={x}
+              cy={yValues[i]}
+              r="5"
+              fill="#4FFFE2"
+              style={{ filter: 'drop-shadow(0 0 8px #05b288)' }}
+              className="animate-pulse"
+            />
+          );
+        })}
+
+        {/* === LINE 3 === */}
+        <polyline
+          points="0,400 200,370 400,380 600,350 800,400 1000,370 1200,390 1400,375 1600,395 1800,360"
+          fill="none"
+          stroke="#8b5cf6"
+          strokeWidth="2"
+        />
+        {[0, 200, 400, 600, 800, 1000, 1200, 1400, 1600, 1800].map((x, i) => {
+          const yValues = [400, 370, 380, 350, 400, 370, 390, 375, 395, 360];
+          return (
+            <circle
+              key={`dot3-${i}`}
+              cx={x}
+              cy={yValues[i]}
+              r="5"
+              fill="#BCA7FF"
+              style={{ filter: 'drop-shadow(0 0 8px #8b5cf6)' }}
+              className="animate-pulse"
+            />
+          );
+        })}
+      </svg>
+    </div>
+
+    {/* Heading */}
+    <h1 className="text-4xl font-bold mb-10 text-center tracking-tight drop-shadow-lg z-10">
+      Proven Strategies at Your Fingertips
+    </h1>
+
+    <div className="flex flex-wrap gap-10 justify-center z-10">
+      {strategies.map((item) => (
+        <div
+          key={item.id}
+          className="rounded-2xl shadow-lg overflow-hidden border border-[#05b288] w-[400px] bg-[#16181D]/90 backdrop-blur-sm hover:scale-[1.03] transition-transform duration-300"
+        >
+          <PerformanceGraph showMarker={item.id === 2} />
+
+          <div className="p-6 rounded-b-2xl bg-[#1e2129]/90">
+            <span className="inline-block px-3 py-1 text-sm rounded-full bg-[#05b288]/20 text-[#05b288] mb-2">
+              {item.pair}
+            </span>
+
+            <h2 className="text-xl font-semibold text-white mb-2">
+              {item.name}
+            </h2>
+
+            <p className="text-sm text-gray-300 mb-4">{item.description}</p>
+
+            {/* Win Rate Bar */}
+            <div className="mb-3">
+              <div className="flex justify-between text-xs font-medium mb-1 text-gray-400">
+                <span>Win Rate</span>
+                <span className="text-white">{item.winRate}%</span>
+              </div>
+              <div className="w-full h-2 bg-gray-700 rounded-full">
+                <div
+                  className="h-2 rounded-full bg-gradient-to-r from-[#06a57f] via-[#05b289] to-[#05b288]"
+                  style={{ width: `${item.winRate}%` }}
+                ></div>
+              </div>
+            </div>
+
+            {/* Stats */}
+            <div className="space-y-2 text-sm mb-6">
+              <div className="flex justify-between">
+                <span className="text-gray-400">Max Drawdown</span>
+                <span className="text-white">{item.maxDrawdown}%</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-400">Total Trades</span>
+                <span className="text-white">{item.totalTrades}</span>
+              </div>
+            </div>
+
+            <button className="w-full py-2.5 text-sm rounded-full font-semibold text-[#05b289] border border-[#05b289] hover:bg-[#05b289] hover:text-white transition">
+              Learn More
+            </button>
+          </div>
+        </div>
+      ))}
     </div>
   </div>
 );
 
-// Security Section Component
-const SecuritySection = () => {
-  const features = [
-    {
-      icon: <FileText size={20} />,
-      title: 'Momentum Trading',
-      active: true,
-    },
-    {
-      icon: <User size={20} />,
-      title: 'Customer identity',
-      active: false,
-    },
-    {
-      icon: <ShieldCheck size={20} />,
-      title: 'Adaptable authentication',
-      active: false,
-    },
-  ];
+export { HeroSection, StrategiesSection };
 
-  return (
-    <div className="py-20 md:py-32 px-4 relative z-10">
-      <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-        {/* Left Content */}
-        <div className="text-left">
-          <p className="text-purple-400 font-semibold mb-3">PROVEN STRATEGIES AT YOUR FINGERTIPS</p>
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-            Deploy Strategies in Minutes
-          </h2>
-          <p className="text-slate-400 text-lg mb-8">
-            Choose from a diverse library of strategies built by expert quants. From scalping to swing trading, find the perfect fit for your risk appetite and goals.
-          </p>
-          <div className="space-y-4">
-            {features.map((feature, index) => (
-              <button
-                key={index}
-                className={`w-full text-left p-4 rounded-lg border transition-all duration-300 flex items-center gap-4 ${feature.active
-                  ? 'bg-slate-800/50 border-purple-600 shadow-lg'
-                  : 'border-slate-800 hover:bg-slate-800/30'
-                  }`}
-              >
-                <div className={`text-purple-400 ${!feature.active && 'opacity-60'}`}>{feature.icon}</div>
-                <span className={`font-medium ${feature.active ? 'text-white' : 'text-slate-400'}`}>
-                  {feature.title}
-                </span>
-              </button>
-            ))}
-          </div>
-        </div>
-        {/* Right Visual */}
-        <div className="relative flex items-center justify-center h-80">
-          {/* Grid Background */}
-          <div className="absolute inset-0 bg-[radial-gradient(#2d3748_1px,transparent_1px)] [background-size:2rem_2rem]"></div>
-          <div style={{ width: '100%', height: '500px', position: 'relative' }}>
-            <Orb
-              hoverIntensity={0.5}
-              rotateOnHover={true}
-              hue={0}
-              forceHoverState={false}
-            >
-              {/* Central Icon */}
-              <div>
-                <img src={logo} alt="Logo" className="w-24 h-24 rounded-2xl border border-slate-300 shadow-xl shadow-gray-200" />
-              </div>
-            </Orb>
-          </div>
-          {/* Glow */}
-          <div className="absolute w-96 h-96 bg-purple-900/40 rounded-full blur-3xl"></div>
 
-        </div>
-      </div>
-    </div>
-  );
-};
+
+
+
+
+
+
+
+
+
+
 
 // Optimized Security Section
 const OptimizedSecuritySection = () => {
@@ -527,7 +731,8 @@ export default function App() {
             <Header />
             <main>
               <HeroSection />
-              <SecuritySection />
+              <MidBannerSection />
+              <StrategiesSection />
               <OptimizedSecuritySection />
               <FeaturesSection />
               <IssuesSection />

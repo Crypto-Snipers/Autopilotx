@@ -190,7 +190,7 @@ const TradingGreetingCard = ({ userName, brokerName }: TradingGreetingCardProps)
 
       {/* If broker is not connected */}
       {!isBrokerConnected && (
-        <div className="bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-[#935fcd] via-[#935fcd] to-[#0f172ae0] bg-opacity-20 rounded-2xl px-6 py-2 flex flex-col md:flex-row justify-between items-center text-white border border-gray-600">
+        <div className="bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-[#3bbf70] to-[#00a457e0] bg-opacity-20 rounded-2xl px-6 py-2 flex flex-col md:flex-row justify-between items-center text-white border border-gray-600">
           {/* New Gradient effect */}
           {/* <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(168,85,247,0.2)_0%,rgba(168,85,247,0)_60%)]"></div> */}
           <div className="max-w-lg">

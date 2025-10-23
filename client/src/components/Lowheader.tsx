@@ -17,17 +17,6 @@ export default function Lowheader() {
 
   }, [user]);
 
-  // const { data, isLoading, error } = useQuery<PriceData[]>({
-  //   queryKey: ["cryptoPrices"],
-  //   queryFn: () => apiRequest("GET", "/api/cryptolive-data"),
-  //   refetchInterval: 5000, // Refetch every 5 seconds
-  //   refetchIntervalInBackground: true, // Continue refetching when tab is in background
-  //   staleTime: 5000, // Consider data fresh for 5 seconds
-  //   refetchOnWindowFocus: true, // Refetch when window regains focus
-  // });
-
-  // const cryptoPrices = data || [];
-
   interface CryptoPrice {
     symbol: string;
     price: number;
@@ -60,14 +49,15 @@ export default function Lowheader() {
   });
 
   return (
-    <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 px-4 md:px-6 bg-[#62319bd0] rounded-md py-3 overflow-hidden">
+    // <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 px-4 md:px-6 bg-gray-200 opacity-90 rounded-md py-3 overflow-hidden">
+    <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 px-4 md:px-6 bg-gray-200 opacity-90 rounded-md py-3 overflow-hidden">
       {/* Crypto Data */}
       <div className="overflow-x-auto whitespace-nowrap text-sm sm:text-base md:text-base flex items-center gap-4">
-        <span className="font-medium text-white">Crypto</span>
+        <span className="font-bold text-[#1a785f]">Crypto</span>
         {cryptoPrices?.map((crypto) => (
-          <span key={crypto.symbol} className="text-white font-mono inline-flex items-center gap-1">
+          <span key={crypto.symbol} className="font-mono inline-flex items-center gap-1 text-[#1a785f]">
             {crypto.symbol}:
-            <span className={crypto.change >= 0 ? "text-green-500" : "text-red-500"}>
+            <span className={crypto.change >= 0 ? "text-green-600" : "text-red-500"}>
               {crypto.price.toFixed(2)} ({crypto.change >= 0 ? "+" : ""}
               {crypto.change.toFixed(2)}%)
             </span>
@@ -78,9 +68,9 @@ export default function Lowheader() {
       <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 text-sm">
         <a
           href="mailto:support@thecryptosnipers.com"
-          className="text-white hover:text-neutral-900 flex items-center"
+          className="text-[#1a785f] hover:text-gray-200 flex items-center"
         >
-          <MessageSquare className="w-4 h-4 mr-1 text-white" />
+          <MessageSquare className="w-4 h-4 mr-1 text-[#1a785f]" />
           support@thecryptosnipers.com
         </a>
       </div>

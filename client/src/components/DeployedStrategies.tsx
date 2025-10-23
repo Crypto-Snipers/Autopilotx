@@ -12,17 +12,26 @@ const DeployedStrategies = () => {
       setisActiveUser(true)
     }
   })
-
+  
   // Fetch user broker is connected or not
-  const { data: strategies, isLoading: isLoadingStrategies } = useQuery({
-    queryKey: ['/deployed', user?.email],
-    staleTime: 30000,
-    queryFn: () => {
-      return apiRequest("GET", `/api/strategies/deployed?email=${encodeURIComponent(user?.email || '')}`);
-      // return apiRequest("GET", `/api/strategies?email=${encodeURIComponent(user?.email || '')}`);
-    },
-    refetchInterval: 2000,
-  });
+  type Strategy = {
+  _id: string;
+  name: string;
+  status: string;
+  margin?: number;
+  Qty?: number;
+  multiplier?: number;
+};
+
+const { data: strategies = [], isLoading: isLoadingStrategies } = useQuery<Strategy[]>({
+  queryKey: ['/deployed', user?.email],
+  staleTime: 30000,
+  queryFn: async () => {
+    const response = await apiRequest("GET", `/api/strategies/deployed?email=${encodeURIComponent(user?.email || '')}`);
+    return (response || []) as Strategy[];
+  },
+  refetchInterval: 2000,
+});
 
   return (
     <div className="bg-[#171f34] rounded-3xl p-6 w-full h-full max-w-md shadow-sm">
