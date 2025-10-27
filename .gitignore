@@ -1,0 +1,66 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Editor directories and files
+.DS_Store
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Local development
+.env
+.env.*
+.env.local
+./client/.env
+./env
+!.env.example
+
+# Dependencies
+node_modules
+.pnp
+.pnp.js
+
+# Build output
+dist
+dist-ssr
+client-dist
+*.local
+
+# Cache
+.cache
+.temp
+.tmp
+
+# Vite
+vite.config.ts.*
+*.tar.gz
+
+# Server
+server/public
+
+# Coverage directory used by testing tools
+coverage
+.nyc_output
+
+# Misc
+*.pem
+*.p12
+*.key
+*.crt
+*.csr
+*.cer
+*.srl
+*.pfx
+*.der
+
+# Local Netlify folder
+.netlify"code/VipinGoogleSheetAPI.json" 

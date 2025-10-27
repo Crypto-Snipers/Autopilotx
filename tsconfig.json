@@ -1,0 +1,60 @@
+{
+  "extends": "./client/tsconfig.paths.json",
+  "compilerOptions": {
+    "incremental": true,
+    "tsBuildInfoFile": "./node_modules/typescript/tsbuildinfo",
+    "noEmit": true,
+    "target": "ESNext",
+    "useDefineForClassFields": true,
+    "lib": [
+      "DOM",
+      "DOM.Iterable",
+      "ESNext"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "react-jsx",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "./client/src/*"
+      ],
+      "@shared/*": [
+        "./shared/*"
+      ]
+    },
+    "types": [
+      "node",
+      "vite/client",
+      "react/jsx-runtime"
+    ],
+    "typeRoots": [
+      "./node_modules/@types",
+      "./client/src/types"
+    ]
+  },
+  "include": [
+    "client/src/**/*",
+    "shared/**/*",
+    "server/**/*",
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.d.ts",
+    "./client/src/vite-env.d.ts",
+    "./client/src/paths.d.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "build",
+    "dist",
+    "**/*.test.ts"
+  ]
+}
