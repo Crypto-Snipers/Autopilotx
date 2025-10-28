@@ -17,6 +17,10 @@ import { ChevronDown, RefreshCcw, TrendingUp } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
 import CryptoMarketOverview from "@/components/CryptoMarketOverview";
 
+interface CompleteProfileResponse {
+  message: string;
+}
+
 export default function Home() {
 
   const queryClient = useQueryClient();
@@ -129,8 +133,8 @@ export default function Home() {
         };
 
         try {
-          const completeResponse = await apiRequest("POST", "/api/auth/complete-profile", user_dict);
-          if (completeResponse?.message === "Registration completed successfully") {
+          const completeResponse = await apiRequest<CompleteProfileResponse>("POST", "/api/auth/complete-profile", user_dict);
+          if ((completeResponse as CompleteProfileResponse)?.message === "Registration completed successfully") {
             // Mark profile as completed in local storage
             const userEmail = user?.email || email;
             if (userEmail) {
@@ -218,7 +222,7 @@ export default function Home() {
         };
 
         try {
-          const completeResponse = await apiRequest("POST", "/api/auth/complete-profile", user_dict);
+          const completeResponse = await apiRequest<CompleteProfileResponse>("POST", "/api/auth/complete-profile", user_dict);
           if (completeResponse?.message === "Registration completed successfully") {
             // Mark this profile as completed in localStorage
             localStorage.setItem(profileCompletedKey, 'true');
@@ -238,10 +242,14 @@ export default function Home() {
 
   // fetch user broker is connected or not
   type BrokerData = {
-    broker_name: string;
-    api_verified: boolean;
-    broker_id: number;
-  } | null;
+      broker_name: string;
+      api_verified: boolean;
+      broker_id: number;
+      balances?: {
+        USDT?: string;
+        [key: string]: string | undefined;
+      };
+    } | null;
 
   const { data: brokerData, isLoading: isLoadingBroker, error: brokerError } = useQuery<BrokerData>({
     queryKey: ['/get-broker', email],
@@ -368,10 +376,18 @@ export default function Home() {
 
         } else {
           // Handle backward compatibility with old single balance format
-          const balanceValue = typeof Balances.balance === 'number' ? Balances.balance : parseFloat(Balances.balance);
+          const balanceValue = typeof Balances.balance === 'number' 
+            ? Balances.balance 
+            : typeof Balances.balance === 'object'
+              ? Balances.balance.usd || Balances.balance.inr || 0
+              : parseFloat(String(Balances.balance));
           if (!isNaN(balanceValue)) {
-            const currency = Balances.currency || 'usd';
-            if (currency.toLowerCase() === 'inr') {
+            const rawCurrency = Balances.currency || 'usd';
+            // Normalize currency whether it's a string or an array
+            const currencyStr = Array.isArray(rawCurrency) ? (rawCurrency[0] || 'usd') : String(rawCurrency || 'usd');
+            const currencyLower = currencyStr.toLowerCase();
+
+            if (currencyLower === 'inr') {
               setBalances({ usd: 0, inr: balanceValue });
               setCurrencies(['inr']);
             } else {
@@ -381,10 +397,10 @@ export default function Home() {
 
             // Update session storage
             sessionStorage.setItem("balances", JSON.stringify({
-              usd: currency.toLowerCase() === 'usd' ? balanceValue : 0,
-              inr: currency.toLowerCase() === 'inr' ? balanceValue : 0
+              usd: currencyLower === 'usd' ? balanceValue : 0,
+              inr: currencyLower === 'inr' ? balanceValue : 0
             }));
-            sessionStorage.setItem("currencies", JSON.stringify([currency.toLowerCase()]));
+            sessionStorage.setItem("currencies", JSON.stringify([currencyLower]));
           }
         }
       } catch (error) {
@@ -612,7 +628,10 @@ export default function Home() {
                                       try {
                                         setIsLoadingDeactivate(true);
 
-                                        const response = await apiRequest("GET",
+                                        // Define the expected response type
+                                        type DeactivateAllResponse = { message: string };
+
+                                        const response: DeactivateAllResponse = await apiRequest("GET",
                                           `/api/strategy/deactivate-all?email=${encodeURIComponent(email || '')}`
                                         );
 
@@ -624,7 +643,7 @@ export default function Home() {
                                         });
 
                                         // Invalidate and refetch the deployed strategies
-                                        await queryClient.invalidateQueries(['/deployed-strategies', email]);
+                                        await queryClient.invalidateQueries({ queryKey: ['/deployed-strategies', email] });
 
                                         // Auto reset toggle after 1 second
                                         setTimeout(() => {
