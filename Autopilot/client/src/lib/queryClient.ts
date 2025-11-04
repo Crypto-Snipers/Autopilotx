@@ -4,10 +4,10 @@ import { supabase } from './supabase';
 // Define the default query function
 const defaultQueryFn: QueryFunction = async ({ queryKey }) => {
   const [endpoint, params] = queryKey as [string, any?];
-  const BASE_URL = "http://localhost:7000";
+  const BASE_URL = "http://localhost:8000";
 
   console.log('VITE_API_URL:', import.meta.env.VITE_API_URL);
-  // const BASE_URL = import.meta.env.VITE_API_URL?.replace('http://', 'https://') || '';
+  //const BASE_URL = import.meta.env.VITE_API_URL?.replace('http://', 'https://') || '';
 
   // Construct the full URL
   const url = `${BASE_URL}${endpoint}`;
@@ -53,8 +53,8 @@ export const queryClient = new QueryClient({
 // Helper function to build API URLs
 export const buildApiUrl = (path: string): string => {
   const cleanPath = path.replace(/^\/+/, '');
-  // const BASE_URL = import.meta.env.VITE_API_URL || '';
-  const BASE_URL = "http://localhost:7000";
+  //const BASE_URL = import.meta.env.VITE_API_URL || '';
+  const BASE_URL = "http://localhost:8000";
   import.meta.env.VITE_API_URL?.replace('http://', 'https://') || '';
   console.log('VITE_API_URL:', import.meta.env.VITE_API_URL);
 

@@ -296,11 +296,11 @@ const PerformanceCard: React.FC<PerformanceCardProps> = ({ data, showMarker = fa
 
     return (
         <>
-            <div className="bg-white rounded-lg shadow-sm p-6 w-full border border-gray-500">
+            <div className="bg-white dark:bg-[#17181d] rounded-lg shadow-sm p-6 w-full border border-gray-500 dark:border-gray-800">
                 <div className="flex justify-between items-start mb-2">
                     <div>
-                        <h3 className="text-lg font-medium text-gray-800">{data.name}</h3>
-                        <p className="text-sm text-gray-500">{data.type}</p>
+                        <h3 className="text-lg font-medium text-gray-800 dark:text-white">{data.name}</h3>
+                        <p className="text-sm text-gray-500 dark:text-gray-400">{data.type}</p>
                     </div>
                     <div className="flex space-x-2">
                         {data.ETH && <span className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">ETH</span>}
@@ -308,7 +308,7 @@ const PerformanceCard: React.FC<PerformanceCardProps> = ({ data, showMarker = fa
                         {data.SOL && <span className="bg-purple-100 text-purple-800 text-xs px-2 py-1 rounded">SOL</span>}
                     </div>
                 </div>
-                {/* <p className="text-sm text-gray-600 mb-4">{data.description}</p> */}
+                {/* <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">{data.description}</p> */}
                 <div className="flex space-x-4 mb-4">
                     <div className="text-sm">
                         <span className="text-[#06C10F] font-medium">Leverage: {data.leverage}</span>
@@ -319,61 +319,42 @@ const PerformanceCard: React.FC<PerformanceCardProps> = ({ data, showMarker = fa
                 </div>
 
                 {/* Description */}
-                <p className="text-sm text-gray-700 mb-3">
+                <p className="text-sm text-gray-700 dark:text-gray-300 mb-3">
                     {data.description}
                 </p>
 
                 {/* Win Rate */}
-                <div className="text-sm font-semibold text-gray-800 mb-1 flex justify-between">
+                <div className="text-sm font-semibold text-gray-800 dark:text-white mb-1 flex justify-between">
                     <span>Win Rate</span>
                     <span>{data.WinRate ?? "0"}%</span>
                 </div>
                 <div className="w-full h-2 bg-gray-200 rounded-full mb-4">
                     <div
-                        className="h-2 bg-green-500 rounded-full"
+                        className="h-2 bg-[#06a57f] rounded-full"
                         style={{ width: `${data.WinRate ?? 0}%` }}
                     />
                 </div>
 
                 {/* Meta info */}
-                <div className="flex flex-col gap-2 bg-gray-50 rounded-xl p-4 text-sm text-gray-700 mb-4">
+                <div className="flex flex-col gap-2 bg-muted rounded-xl p-4 text-sm text-foreground mb-4">
                     <div className="flex justify-between">
-                        <div className="text-gray-500">Max Drawdown</div>
+                        <div className="text-gray-500 dark:text-gray-400">Max Drawdown</div>
                         <div className="font-semibold">
                             {data.MaxDrawdown ?? "0"}%
                         </div>
                     </div>
                     <div className="flex justify-between">
-                        <div className="text-gray-500">Total Trades:</div>
+                        <div className="text-gray-500 dark:text-gray-300">Total Trades:</div>
                         <div className="font-semibold">
                             {data.TotalTrades ?? "0"}
                         </div>
                     </div>
                 </div>
 
-                {/* <div className="mb-4">
-                    <PerformanceGraph showMarker={showMarker} />
-                </div>
-
-                <div className="grid grid-cols-2 gap-y-2 mb-4">
-                    <div className="text-sm text-gray-600">Total Trades:</div>
-                    <div className="text-sm font-medium text-right">{data.TotalTrades.toLocaleString()}</div>
-
-                    <div className="text-sm text-gray-600">Total Returns:</div>
-                    <div className="text-sm font-medium text-right text-green-600">{data.Returns}%</div>
-
-                    <div className="text-sm text-gray-600">Win Rate:</div>
-                    <div className="text-sm font-medium text-right">{data.WinRate}%</div>
-
-
-                    <div className="text-sm text-gray-600">Max Drawdown:</div>
-                    <div className="text-sm font-medium text-right text-red-500">{data.MaxDrawdown}%</div>
-                </div> */}
-
                 <div className="flex items-center gap-2 w-full">
                     <div className="flex items-center gap-2 w-1/2">
                         <button
-                            className="inline-flex items-center justify-center gap-1 whitespace-nowrap text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-background h-10 w-full border border-blue-600 text-blue-600 font-medium py-2 rounded-full transition-colors duration-200 hover:bg-blue-600 hover:text-white active:bg-blue-700"
+                            className="inline-flex items-center justify-center gap-1 whitespace-nowrap text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-background h-10 w-full border border-[#06a57f] text-[#06a57f] font-medium py-2 rounded-full transition-colors duration-200 hover:bg-[#06a57f] hover:text-white"
                             onClick={handleDeployStrategy}
                             disabled={isCongratsPopupOpen}
                         >
@@ -381,14 +362,14 @@ const PerformanceCard: React.FC<PerformanceCardProps> = ({ data, showMarker = fa
                         </button>
                     </div>
 
-                    <div className="flex items-center justify-center w-1/2 border border-blue-600 rounded-full px-4 h-10">
-                        <div className="text-sm font-semibold text-blue-600">Multiplier</div>
+                    <div className="flex items-center justify-center w-1/2 border border-[#06a57f] rounded-full px-4 h-10">
+                        <div className="text-sm font-semibold text-[#06a57f]">Multiplier</div>
                         <input
                             type="number"
                             min={1}
                             max={50}
                             step={1}
-                            className="w-16 text-center font-semibold text-sm text-blue-600 focus:outline-none ml-2"
+                            className="w-16 text-center font-semibold text-sm text-[#06a57f] focus:outline-none ml-2 dark:bg-[#17181d]"
                             value={multiplier}
                             onChange={e => setMultiplier(Number(e.target.value))}
                             disabled={isCongratsPopupOpen}
@@ -402,7 +383,7 @@ const PerformanceCard: React.FC<PerformanceCardProps> = ({ data, showMarker = fa
                                 onClick={handleOpenEdit}
                                 className="cursor-pointer"
                             >
-                                <Settings className='text-blue-600' />
+                                <Settings className='text-green-600' />
                             </button>
                         )}
                     </div>

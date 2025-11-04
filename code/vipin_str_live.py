@@ -25,7 +25,7 @@ MONGO_URL = "mongodb+srv://upadhyaymanisha13:Manisha%401306@cluster0.opfmq9.mong
 #     raise ValueError("MONGO_URL environment variable is not set")
 
 client = pymongo.MongoClient(MONGO_URL)
-db = client["CryptoSniper"]
+db = client["Autopilotx"]
 users = db["users"]
 position_collection = db["position_2"]
 trade_collection = db["trades_2"]

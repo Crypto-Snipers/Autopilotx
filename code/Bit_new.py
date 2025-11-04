@@ -572,7 +572,7 @@ if __name__ == "__main__":
 
     # Connect to MongoDB
     client = pymongo.MongoClient(MONGO_URL)
-    db = client["CryptoSniper"]
+    db = client["Autopilotx"]
     position_collection = db["position_2"]
     trade_collection = db["trades_2"]
     candles = db["candleData"]

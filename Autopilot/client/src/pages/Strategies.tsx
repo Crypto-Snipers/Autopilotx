@@ -584,7 +584,7 @@ export default function Strategies() {
 
           <div className="flex items-center gap-4 mb-6">
             <div
-              className="inline-flex rounded-md shadow-sm bg-neutral-50 p-[10px]"
+              className="inline-flex rounded-md shadow-sm bg-neutral-50 dark:bg-[#2d313a] p-[10px]"
               role="group"
             >
               <Button

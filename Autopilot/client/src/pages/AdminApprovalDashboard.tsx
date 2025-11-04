@@ -35,118 +35,120 @@ interface DashboardMetrics {
 }
 
 // ✅ Mock Users (for local testing)
-const mockUsers: User[] = [
-    {
-        name: "Alice Johnson",
-        email: "alice@example.com",
-        broker_name: "CoinDCX",
-        broker_id: "BRK-001",
-        created_at: "2025-10-05T10:23:00Z",
-        status: "Pending"
-    },
-    {
-        name: "Bob Smith",
-        email: "bob@example.com",
-        broker_name: "Delta Exchange",
-        broker_id: "BRK-002",
-        created_at: "2025-09-29T09:15:00Z",
-        status: "Approved"
-    },
-    {
-        name: "Charlie Patel",
-        email: "charlie@example.com",
-        broker_name: "CoinDCX",
-        broker_id: "BRK-003",
-        created_at: "2025-10-01T12:00:00Z",
-        status: "Pending"
-    },
-    {
-        name: "Diana Kaur",
-        email: "diana@example.com",
-        broker_name: "CoinDCX",
-        broker_id: "BRK-004",
-        created_at: "2025-09-25T14:45:00Z",
-        status: "Approved"
-    },
-]
+// const mockUsers: User[] = [
+//     {
+//         name: "Alice Johnson",
+//         email: "alice@example.com",
+//         broker_name: "CoinDCX",
+//         broker_id: "BRK-001",
+//         created_at: "2025-10-05T10:23:00Z",
+//         status: "Pending"
+//     },
+//     {
+//         name: "Bob Smith",
+//         email: "bob@example.com",
+//         broker_name: "Delta Exchange",
+//         broker_id: "BRK-002",
+//         created_at: "2025-09-29T09:15:00Z",
+//         status: "Approved"
+//     },
+//     {
+//         name: "Charlie Patel",
+//         email: "charlie@example.com",
+//         broker_name: "CoinDCX",
+//         broker_id: "BRK-003",
+//         created_at: "2025-10-01T12:00:00Z",
+//         status: "Pending"
+//     },
+//     {
+//         name: "Diana Kaur",
+//         email: "diana@example.com",
+//         broker_name: "CoinDCX",
+//         broker_id: "BRK-004",
+//         created_at: "2025-09-25T14:45:00Z",
+//         status: "Approved"
+//     },
+// ]
 
 // Show users by filtering it to Pending, Approved, or All
 const fetchUsers = async (status: string): Promise<User[]> => {
-    // const queryParam = status === "All" ? "" : `?status_filter=${encodeURIComponent(status)}`;
+    const queryParam = status === "All" ? "" : `?status_filter=${encodeURIComponent(status)}`;
 
-    // try {
-    //     const res = await apiRequest<User[] | { users: User[] }>("GET", `/api/admin/users${queryParam}`);
-
-    //     if (Array.isArray(res)) return res;
-    //     if (res?.users && Array.isArray(res.users)) return res.users;
-
-    //     throw new Error("Unexpected response format");
-    // } catch (err) {
-    //     console.error("Failed to fetch users:", err);
-    //     return [];
-    // }
     try {
-        const queryParam = status === "All" ? "" : `?status_filter=${encodeURIComponent(status)}`;
         const res = await apiRequest<User[] | { users: User[] }>("GET", `/api/admin/users${queryParam}`);
+
         if (Array.isArray(res)) return res;
         if (res?.users && Array.isArray(res.users)) return res.users;
+
         throw new Error("Unexpected response format");
     } catch (err) {
-        console.warn("⚠️ Using mock data for fetchUsers due to error:", err);
-        if (status === "All") return mockUsers;
-        return mockUsers.filter(u => u.status === status);
+        console.error("Failed to fetch users:", err);
+        return [];
     }
+
+    // try {
+    //     const queryParam = status === "All" ? "" : `?status_filter=${encodeURIComponent(status)}`;
+    //     const res = await apiRequest<User[] | { users: User[] }>("GET", `/api/admin/users${queryParam}`);
+    //     if (Array.isArray(res)) return res;
+    //     if (res?.users && Array.isArray(res.users)) return res.users;
+    //     throw new Error("Unexpected response format");
+    // } catch (err) {
+    //     console.warn("⚠️ Using mock data for fetchUsers due to error:", err);
+    //     if (status === "All") return mockUsers;
+    //     return mockUsers.filter(u => u.status === status);
+    // }
 };
 
 // Fetch all users for metrics calculation
 const fetchAllUsers = async (): Promise<User[]> => {
-    // try {
-    //     const res = await apiRequest<{ success: boolean, count: number; users: User[] }>(
-    //         "GET",
-    //         "/api/all-users"
-    //     );
-
-    //     if (!res.users || !Array.isArray(res.users)) {
-    //         throw new Error("Invalid response format");
-    //     }
-
-    //     return res.users;
-    // } catch (error) {
-    //     console.error("Error fetching all users:", error);
-    //     throw new Error("Failed to fetch all users");
-    // }
-    // ✅ Mock data fallback
     try {
-        const res = await apiRequest<{ success: boolean, count: number; users: User[] }>("GET", "/api/all-users");
-        if (!res.users || !Array.isArray(res.users)) throw new Error("Invalid response format");
+        const res = await apiRequest<{ success: boolean, count: number; users: User[] }>(
+            "GET",
+            "/api/all-users"
+        );
+
+        if (!res.users || !Array.isArray(res.users)) {
+            throw new Error("Invalid response format");
+        }
+
         return res.users;
     } catch (error) {
-        console.warn("⚠️ Using mock data for fetchAllUsers due to error:", error);
-        return mockUsers;
+        console.error("Error fetching all users:", error);
+        throw new Error("Failed to fetch all users");
     }
+
+    // ✅ Mock data fallback
+    // try {
+    //     const res = await apiRequest<{ success: boolean, count: number; users: User[] }>("GET", "/api/all-users");
+    //     if (!res.users || !Array.isArray(res.users)) throw new Error("Invalid response format");
+    //     return res.users;
+    // } catch (error) {
+    //     console.warn("⚠️ Using mock data for fetchAllUsers due to error:", error);
+    //     return mockUsers;
+    // }
 };
 
 // Approve users status
 const approveUser = async (email: string) => {
-    // const data = await apiRequest(
-    //     "PUT",
-    //     "/api/admin/update-user-status",
-    //     {
-    //         email,
-    //         new_status: "approved"
-    //     }
-    // );
-    // console.log("Approve user response:", data);
-    // return data;
+    const data = await apiRequest(
+        "PUT",
+        "/api/admin/update-user-status",
+        {
+            email,
+            new_status: "approved"
+        }
+    );
+    console.log("Approve user response:", data);
+    return data;
 
     // ✅ Mock approve behavior
-    try {
-        const data = await apiRequest("PUT", "/api/admin/update-user-status", { email, new_status: "approved" });
-        return data;
-    } catch {
-        console.warn("⚠️ Using mock approveUser fallback");
-        return { success: true, email, new_status: "approved" };
-    }
+    // try {
+    //     const data = await apiRequest("PUT", "/api/admin/update-user-status", { email, new_status: "approved" });
+    //     return data;
+    // } catch {
+    //     console.warn("⚠️ Using mock approveUser fallback");
+    //     return { success: true, email, new_status: "approved" };
+    // }
 };
 
 export default function AdminDashboard() {

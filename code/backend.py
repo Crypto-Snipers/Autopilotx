@@ -55,7 +55,7 @@ session_cache = auth.session_cache
 # Configure logging with WARNING level to reduce verbosity
 # Ensure logs directory exists
 
-load_dotenv(dotenv_path=".env")
+load_dotenv()
 
 ENV = os.getenv("ENV", "dev")
 # DELTA_BASE_URL = os.getenv("DELTA_BASE_URL", "https://api.delta.exchange")
@@ -422,7 +422,7 @@ otp_store = {}
 
 # FastAPI app initialization
 async def init_storage():
-    storage = MongoDBStorage(client, "CryptoSniper")
+    storage = MongoDBStorage(client, "Autopilotx")
     await storage.initialize()
     return storage
 
@@ -454,14 +454,21 @@ app = FastAPI(
 
 # CORS configuration
 origins = [
+    # "http://13.201.215.73:7000/",
+    # "http://13.201.215.73:3000/",
     "http://localhost:3000",
     "http://127.0.0.1:3000",
+    "http://localhost:7000",
+    "http://127.0.0.1:7000",
+
+    
 ]
 
 # Add middleware
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=["*"], 
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

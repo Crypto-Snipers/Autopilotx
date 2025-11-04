@@ -123,7 +123,7 @@ class UserNotificationWatcher:
             title="Welcome to CryptoSnipers!",
             message=(
                 f"Hello {user_data.get('name', 'there')}, welcome to "
-                "CryptoSnipers! We're excited to have you. Explore our "
+                "Autopilotx! We're excited to have you. Explore our "
                 "features and start trading."
             ),  # Use the user's email as the user_type for specific targeting
             user_type=user_email,

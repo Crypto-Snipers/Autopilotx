@@ -42,7 +42,7 @@
 # # MONGO_URL = os.environ.get("MONGO_URL")
 # MONGO_URL = "mongodb+srv://vipinpal7060:gEfl55JVEWDCZum1@cluster0.fg30pmw.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
 # client = pymongo.MongoClient(MONGO_URL)
-# db = client["CryptoSniper"]
+# db = client["Autopilotx"]
 # candles = db["candleData"]
 # ticks = db["ticks"]
 # candleSymbol = SYMBOL
@@ -221,7 +221,7 @@
 
 #             # Connect to MongoDB with a timeout
 #             client = pymongo.MongoClient(MONGO_URL, serverSelectionTimeoutMS=10000)
-#             db = client["CryptoSniper"]
+#             db = client["Autopilotx"]
 #             candles = db["candleData"]
 
 #             # Format symbol for MongoDB query
@@ -1520,7 +1520,7 @@ load_dotenv()
 # MONGO_URL = os.environ.get("MONGO_URL")
 MONGO_URL = "mongodb+srv://vipinpal7060:gEfl55JVEWDCZum1@cluster0.fg30pmw.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
 client = pymongo.MongoClient(MONGO_URL)
-db = client["CryptoSniper"]
+db = client["Autopilotx"]
 candles = db["candleData"]
 ticks = db["ticks"]
 trade_config = db["trading_configs"]
@@ -1717,7 +1717,7 @@ def fetch_historical_data(timeframe, max_retries=3, retry_delay=5):
 
             # Connect to MongoDB with a timeout
             client = pymongo.MongoClient(MONGO_URL, serverSelectionTimeoutMS=10000)
-            db = client["CryptoSniper"]
+            db = client["Autopilotx"]
             candles = db["candleData"]
 
             # Format symbol for MongoDB query

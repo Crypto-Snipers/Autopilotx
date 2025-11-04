@@ -9,7 +9,7 @@ load_dotenv()
 MONGO_URL = os.getenv("MONGO_URL")
 
 client = pymongo.MongoClient(MONGO_URL)
-db = client["CryptoSniper"]
+db = client["Autopilotx"]
 users = db["users"]
 positions = db["position"]
 trades = db["trades"]

@@ -39,7 +39,7 @@ MONGO_LINK = os.getenv("MONGO_URL")
 if not MONGO_LINK:
     raise ValueError("MONGO_URL environment variable not found in .env file")
     
-DB_NAME = os.getenv("MONGO_DB_NAME") or "CryptoSniper"
+DB_NAME = os.getenv("MONGO_DB_NAME") or "Autopilotx"
 
 
 class BalanceUpdater:
