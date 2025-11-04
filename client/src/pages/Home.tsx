@@ -129,14 +129,19 @@ export default function Home() {
         };
 
         try {
-          const completeResponse = await apiRequest("POST", "/api/auth/complete-profile", user_dict);
-          if (completeResponse?.message === "Registration completed successfully") {
-            // Mark profile as completed in local storage
+          const completeResponse = await apiRequest<{ message?: string }>(
+            "POST",
+            "/api/auth/complete-profile",
+            user_dict
+          );
+
+          if (completeResponse.message === "Registration completed successfully") {
             const userEmail = user?.email || email;
             if (userEmail) {
               localStorage.setItem(`profile_completed_${userEmail}`, 'true');
             }
           }
+
         } catch (error) {
           console.error("Profile completion error:", error);
           console.log(user_dict);
@@ -218,11 +223,16 @@ export default function Home() {
         };
 
         try {
-          const completeResponse = await apiRequest("POST", "/api/auth/complete-profile", user_dict);
+          const completeResponse = await apiRequest<{ message?: string }>(
+            "POST",
+            "/api/auth/complete-profile",
+            user_dict
+          );
+
           if (completeResponse?.message === "Registration completed successfully") {
-            // Mark this profile as completed in localStorage
             localStorage.setItem(profileCompletedKey, 'true');
           }
+
 
         } catch (error) {
           console.error("Profile completion error:", error);
@@ -241,7 +251,13 @@ export default function Home() {
     broker_name: string;
     api_verified: boolean;
     broker_id: number;
+    balances?: {
+      USDT?: number;
+      USD?: number;
+      INR?: number;
+    };
   } | null;
+
 
   const { data: brokerData, isLoading: isLoadingBroker, error: brokerError } = useQuery<BrokerData>({
     queryKey: ['/get-broker', email],
@@ -284,13 +300,10 @@ export default function Home() {
 
   // Update the balance data type
   type BalanceData = {
-    balance: {
-      usd: number;
-      inr: number;
-    } | number | string; // Handle backward compatibility
-    currency?: string | string[];
-    [key: string]: any;
-  };
+  balance: number | string | { usd: number; inr: number };
+  currency?: string;
+};
+
 
   const {
     data: Balances,
@@ -349,82 +362,81 @@ export default function Home() {
       try {
         console.log('Balance data from API:', Balances);
 
-        // Handle new format with both USD and INR
-        if (typeof Balances === 'object' && Balances.balance && typeof Balances.balance === 'object') {
+        // ✅ Handle new format with both USD and INR
+        if (typeof Balances.balance === 'object' && Balances.balance !== null) {
           const { balance, currency } = Balances;
 
-          // Set balances for both currencies
           setBalances({
             usd: balance.usd || 0,
-            inr: balance.inr || 0
+            inr: balance.inr || 0,
           });
 
-          // Set available currencies based on API response
           if (Array.isArray(currency)) {
-            setCurrencies(currency);
+            setCurrencies(currency as ('usd' | 'inr')[]);
           } else if (typeof currency === 'string') {
-            setCurrencies([currency]);
+            setCurrencies([currency.toLowerCase() as 'usd' | 'inr']);
           } else {
-            // Default based on broker
             setCurrencies(brokerName === 'coindcx' ? ['usd', 'inr'] : ['usd']);
           }
 
-          // Update session storage with new format
-          sessionStorage.setItem("balances", JSON.stringify({ usd: balance.usd || 0, inr: balance.inr || 0 }));
-          sessionStorage.setItem("currencies", JSON.stringify(Array.isArray(currency) ? currency : [currency || 'usd']));
-
+          sessionStorage.setItem(
+            'balances',
+            JSON.stringify({ usd: balance.usd || 0, inr: balance.inr || 0 })
+          );
+          sessionStorage.setItem('currencies', JSON.stringify(currencies));
         } else {
-          // Handle backward compatibility with old single balance format
-          const balanceValue = typeof Balances.balance === 'number' ? Balances.balance : parseFloat(Balances.balance);
-          if (!isNaN(balanceValue)) {
-            const currency = Balances.currency || 'usd';
-            if (currency.toLowerCase() === 'inr') {
-              setBalances({ usd: 0, inr: balanceValue });
-              setCurrencies(['inr']);
-            } else {
-              setBalances({ usd: balanceValue, inr: 0 });
-              setCurrencies(['usd']);
-            }
+          // ✅ Handle old format with single balance + currency
+          const rawBalance = Balances.balance;
+          const balanceValue =
+            typeof rawBalance === 'number'
+              ? rawBalance
+              : parseFloat(rawBalance as string);
 
-            // Update session storage
-            sessionStorage.setItem("balances", JSON.stringify({
-              usd: currency.toLowerCase() === 'usd' ? balanceValue : 0,
-              inr: currency.toLowerCase() === 'inr' ? balanceValue : 0
-            }));
-            sessionStorage.setItem("currencies", JSON.stringify([currency.toLowerCase()]));
+          if (!isNaN(balanceValue)) {
+            const currency =
+              (Balances.currency || 'usd').toLowerCase() as 'usd' | 'inr';
+
+            setBalances({
+              usd: currency === 'usd' ? balanceValue : 0,
+              inr: currency === 'inr' ? balanceValue : 0,
+            });
+            setCurrencies([currency]);
+
+            sessionStorage.setItem(
+              'balances',
+              JSON.stringify({
+                usd: currency === 'usd' ? balanceValue : 0,
+                inr: currency === 'inr' ? balanceValue : 0,
+              })
+            );
+            sessionStorage.setItem('currencies', JSON.stringify([currency]));
           }
         }
       } catch (error) {
         console.error('Error parsing balance data:', error);
       }
     } else if (isBalanceError || isLoadingBalance) {
-      // Fallback logic remains similar but updated for new state structure
-      if (brokerData && brokerData.balances && brokerData.balances.USDT) {
-        try {
-          const balanceFromBroker = parseFloat(brokerData.balances.USDT);
-          if (!isNaN(balanceFromBroker)) {
-            console.log('Setting balance from broker data:', balanceFromBroker);
-            setBalances({ usd: balanceFromBroker, inr: 0 });
-            setCurrencies(['usd']);
-            sessionStorage.setItem("balances", JSON.stringify({ usd: balanceFromBroker, inr: 0 }));
-            sessionStorage.setItem("currencies", JSON.stringify(['usd']));
-          }
-        } catch (error) {
-          console.error('Error parsing broker balance data:', error);
+      // ✅ Fallback to brokerData or session storage
+      if (brokerData?.balances?.USDT) {
+        const balanceFromBroker = parseFloat(brokerData.balances.USDT.toString());
+        if (!isNaN(balanceFromBroker)) {
+          setBalances({ usd: balanceFromBroker, inr: 0 });
+          setCurrencies(['usd']);
+          sessionStorage.setItem(
+            'balances',
+            JSON.stringify({ usd: balanceFromBroker, inr: 0 })
+          );
+          sessionStorage.setItem('currencies', JSON.stringify(['usd']));
         }
       } else {
-        // Try to get from session storage
-        const storedBalances = sessionStorage.getItem("balances");
-        const storedCurrencies = sessionStorage.getItem("currencies");
+        const storedBalances = sessionStorage.getItem('balances');
+        const storedCurrencies = sessionStorage.getItem('currencies');
         if (storedBalances && storedCurrencies) {
           try {
             const parsedBalances = JSON.parse(storedBalances);
             const parsedCurrencies = JSON.parse(storedCurrencies);
-            if (parsedBalances && parsedCurrencies) {
-              console.log('Setting balances from session storage:', parsedBalances);
-              setBalances(parsedBalances);
-              setCurrencies(parsedCurrencies);
-            }
+            setBalances(parsedBalances);
+            setCurrencies(parsedCurrencies);
           } catch (error) {
             console.error('Error parsing stored balance data:', error);
           }
@@ -432,6 +444,7 @@ export default function Home() {
       }
     }
   }, [Balances, brokerData, isBalanceError, isLoadingBalance, brokerName]);
+
 
   // Helper function to format currency display
   const formatBalanceDisplay = () => {
@@ -620,9 +633,11 @@ export default function Home() {
                                       try {
                                         setIsLoadingDeactivate(true);
 
-                                        const response = await apiRequest("GET",
-                                          `/api/strategy/deactivate-all?email=${encodeURIComponent(email || '')}`
+                                        const response = await apiRequest<{ message?: string }>(
+                                          "POST",
+                                          "/api/strategy/deactivate-all"
                                         );
+
 
                                         setRunAllEnabled(true);
 
@@ -632,7 +647,10 @@ export default function Home() {
                                         });
 
                                         // Invalidate and refetch the deployed strategies
-                                        await queryClient.invalidateQueries(['/deployed-strategies', email]);
+                                        await queryClient.invalidateQueries({
+                                          queryKey: ['/deployed-strategies', email],
+                                        });
+
 
                                         // Auto reset toggle after 1 second
                                         setTimeout(() => {

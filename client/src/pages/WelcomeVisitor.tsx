@@ -6,7 +6,7 @@ import Orb from '../components/ui/orb';
 import logo from '../assets/autopilotx_logo.jpg';
 import icon from '../assets/logo.png';
 import heroimage from '../assets/herobanner.png';
-import "../types/HeroSection.css"; 
+import "../types/herosection.css"; 
 import midbanner from '../assets/dashboard.jpeg'
 
 
