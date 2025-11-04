@@ -225,7 +225,7 @@ const AddBrokerModal: React.FC<AddBrokerModalProps> = ({ isOpen, onClose, onSucc
                     type="button"
                     className="px-3 py-2 text-xs rounded-lg font-medium bg-[#02b589] hover:bg-[#00a67d] text-white transition"
                     onClick={() => {
-                      navigator.clipboard.writeText("13.232.102.237")
+                      navigator.clipboard.writeText("13.232.102.237");
                       toast({
                         title: "Successful",
                         description: "Text copied!",

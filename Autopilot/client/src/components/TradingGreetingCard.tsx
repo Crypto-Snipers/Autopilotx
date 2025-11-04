@@ -76,30 +76,10 @@ const TradingGreetingCard = ({ userName, brokerName }: TradingGreetingCardProps)
       const bn = getSessionItem('broker_name', '');
       const api_verified = getSessionItem('api_verified', '');
       const email = getSessionItem('signupEmail', '');
-      // const pnlValue = getSessionItem('pnl', 0);
-
-      // console.log('Session storage values:', {
-      //   broker_name: bn,
-      //   api_verified,
-      //   email,
-      //   // pnl: pnlValue,
-      //   brokerName
-      // });
 
       if (email) {
         setEmail(email);
       }
-
-      // if (pnlValue) {
-      //   try {
-      //     const parsedPnl = parseFloat(pnlValue);
-      //     if (!isNaN(parsedPnl)) {
-      //       setSessionPnl(parsedPnl);
-      //     }
-      //   } catch (error) {
-      //     console.error('Error parsing PNL value:', error);
-      //   }
-      // }
 
       // Check all possible conditions that indicate a broker is connected
       if (api_verified === 'true' || bn || brokerName) {
