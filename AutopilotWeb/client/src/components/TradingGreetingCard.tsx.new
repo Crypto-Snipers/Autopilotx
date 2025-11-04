@@ -1,0 +1,85 @@
+import React, { useState } from 'react';
+import { Plus } from 'lucide-react';
+import AddBrokerModal from './addBrokerModal';
+
+interface TradingGreetingCardProps {
+  userName?: string;
+}
+
+const TradingGreetingCard = ({ userName }: TradingGreetingCardProps) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleBrokerSuccess = () => {
+    // Refresh broker data or perform any other actions after successful connection
+    console.log("Broker connected successfully");
+    // You might want to trigger a refresh of the parent component
+    // or potentially redirect to another page
+  };
+
+  return (
+    <div className="bg-gray-100 p-8 w-full">
+      {/* Header greeting */}
+      <div className="mb-4">
+        <h1 className="text-4xl font-bold text-gray-900">Hi, {userName ? userName : "User"} !</h1>
+        <p className="text-gray-600 mt-2">Hey, Trade Intelligently. Execute Instantly. Grow Confidently.</p>
+      </div>
+
+      {/* Blue card */}
+      <div className="bg-blue-600 rounded-xl p-4 flex justify-between items-center">
+        <div className="max-w-md">
+          <h2 className="text-2xl font-bold text-white mb-4">Ready to Trade Smarter? Connect BingX!</h2>
+          <p className="text-white mb-6">
+            Add your <span className="font-semibold">BingX</span> account to activate strategy deployment and start trading smarter.
+          </p>
+
+          <div className="flex gap-4">
+            {/* Add Broker Button */}
+            <button 
+              className="bg-white text-blue-600 font-medium px-6 py-3 rounded-full flex items-center gap-2"
+              onClick={handleOpenModal}
+            >
+              <Plus size={20} className="text-blue-600" />
+              Add Broker
+            </button>
+
+            {/* Create Account Button */}
+            <button className="bg-blue-500 border border-white text-white font-medium px-6 py-3 rounded-full flex items-center gap-2">
+              <div className="w-5 h-5 flex items-center justify-center">
+                <span className="text-white font-bold text-lg">×</span>
+              </div>
+              Create Account
+            </button>
+          </div>
+        </div>
+
+        {/* Trading character illustration */}
+        <div className="relative w-64 h-64" >
+          <svg width="100%" height="100%" viewBox="0 0 154 153" preserveAspectRatio="xMidYMid meet" fill="none" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
+            <path d="M78.2157 99.4051C78.2157 99.4051 76.1443 97.6035 72.312 98.8555C68.4797 100.107 67.0038 108.815 67.0038 108.815C67.0038 108.815 65.6603 116.342 65.986 119.483C66.3117 122.623 65.986 123.447 66.6832 124.816C67.3805 126.185 68.266 127.783 69.5994 129.112C70.9328 130.44 72.8871 131.397 73.8439 131.738C74.8007 132.084 76.2359 131.738 76.2359 131.738L77.5184 124.959L78.3276 118.17L78.7449 112.047L79.0656 104.352C79.0656 104.352 79.5134 100.667 78.7144 99.9344C77.9256 99.2066 78.2157 99.4051 78.2157 99.4051Z" fill="#01EFB7" />
+            <path d="M81.0759 99.3745C81.0759 99.3745 83.0302 97.4456 86.9337 98.4533C90.8372 99.461 92.8577 108.062 92.8577 108.062C92.8577 108.062 94.6797 115.487 94.5423 118.643C94.4049 121.798 94.7917 122.597 94.1809 124.007C93.5702 125.417 92.7865 127.066 91.5396 128.475C90.2927 129.885 88.4045 130.959 87.4681 131.361C86.5368 131.763 85.0761 131.509 85.0761 131.509L83.3661 124.826L82.1345 118.103L81.3304 112.011L80.5313 104.352C80.5313 104.352 79.8494 100.703 80.6026 99.9241C81.3507 99.1556 81.0759 99.3745 81.0759 99.3745Z" fill="#01EFB7" />
+            <path d="M77.4674 99.4354L77.4776 99.4048L77.6099 99.0129C77.6099 99.0129 78.6328 99.4252 78.8313 99.9697C79.0705 100.631 79.1825 101.329 79.1621 102.026C79.1316 102.794 79.0145 105.461 79.0145 105.461L78.8568 109.039L78.7346 112.149L78.4751 116.215C78.4751 116.215 78.302 119.085 78.2053 119.783C78.1086 120.48 77.6659 124.022 77.6659 124.022C77.6659 124.022 77.4674 125.671 77.0552 127.717C76.6378 129.758 76.2459 131.6 76.2459 131.6C76.2459 131.6 76.4495 132.012 75.6505 131.951C74.8515 131.89 74.4749 131.88 74.4749 131.88L74.9227 129.798L75.4113 126.999L75.8592 124.139L76.1442 121.437L76.5259 118.515L76.6836 115.95L77.0297 112.454L77.2435 108.779L77.3452 104.8L77.4318 101.868L77.4725 99.4201L77.4674 99.4354Z" fill="white" />
+            <path d="M23.9937 32.475C23.5611 32.4648 23.5 32.475 23.2455 32.475C22.1412 32.4852 21.0775 32.9127 20.1105 33.442C19.1435 33.9712 18.2478 34.6125 17.632 35.5031C16.7465 36.7755 16.5429 38.3939 16.5582 39.9461C16.548 40.7197 16.6498 41.4933 16.8635 42.2414C17.1231 43.015 17.5353 43.7275 18.0799 44.3382C19.7695 46.3027 22.5229 47.3409 25.0726 46.8575C27.6224 46.374 29.8362 44.3331 30.4164 41.8037C30.5996 40.8928 30.6454 39.9614 30.5589 39.0402C30.4622 37.7424 30.2078 36.4141 29.5003 35.3199C28.7929 34.2257 27.0676 32.4699 23.6476 32.4801H23.9937V32.475Z" fill="#010E30" />
+            <path d="M44.855 81.6177C44.855 81.6482 41.3179 84.0402 38.7122 89.5723C36.1065 95.1044 37.8623 101.624 37.8623 101.624C37.8623 101.624 38.9921 105.741 40.7123 108.082C42.4274 110.418 44.5955 112.749 44.5955 112.749C44.5955 112.749 48.0308 115.925 50.8146 117.38C53.5934 118.836 57.9092 120.78 60.9221 121.6L66.3168 122.943C66.3168 122.943 65.8689 119.655 65.986 117.33C66.103 115.004 66.3575 111.182 67.1921 108.153C68.0268 105.125 68.6935 102.626 69.7572 100.835C70.8208 99.0436 73.5538 98.5448 73.5538 98.5448L78.0222 98.6059L83.0099 98.9928L88.5012 99.0539C88.5012 99.0539 86.3688 93.8916 83.4983 89.1856C80.6278 84.4746 79.4216 85.5942 79.4216 85.5942L77.8492 88.3934L75.2078 93.5658L72.4594 97.0214L69.5077 98.545C69.5077 98.545 61.7721 85.9148 57.2991 80.9922C52.8262 76.0696 45.9389 74.7819 45.9389 74.7819L44.855 81.6177Z" fill="#010E30" />
+          </svg>
+        </div>
+      </div>
+
+      {/* Add Broker Modal */}
+      <AddBrokerModal 
+        isOpen={isModalOpen} 
+        onClose={handleCloseModal} 
+        onSuccess={handleBrokerSuccess}
+      />
+    </div>
+  );
+};
+
+export default TradingGreetingCard;
