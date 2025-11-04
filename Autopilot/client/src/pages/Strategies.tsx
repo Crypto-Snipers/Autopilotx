@@ -584,7 +584,7 @@ export default function Strategies() {
 
           <div className="flex items-center gap-4 mb-6">
             <div
-              className="inline-flex rounded-md shadow-sm bg-neutral-50 p-[10px]"
+              className="inline-flex rounded-md shadow-sm bg-neutral-50 dark:bg-[#17181d] p-[10px]"
               role="group"
             >
               <Button
@@ -672,26 +672,26 @@ export default function Strategies() {
                     <CardContent className="p-0">
                       {/* Header */}
                       <div className="flex justify-between items-start mb-2">
-                        <div className="text-lg font-bold text-gray-900">
+                        <div className="text-lg font-bold text-gray-900 dark:text-white">
                           {strategy.name}
                         </div>
-                        <span className="text-xs font-semibold text-green-700 bg-green-100 px-2 py-1 rounded-full">
+                        <span className="text-xs font-semibold text-green-700 bg-green-100 px-2 py-1 rounded-full dark:bg-green-100">
                           +{strategy.Returns ?? "0"}%
                         </span>
                       </div>
 
 
                       {/* Description */}
-                      <p className="text-sm text-gray-700 mb-3">
+                      <p className="text-sm text-gray-700 dark:text-white mb-3">
                         {strategy.description}
                       </p>
 
                       {/* Win Rate */}
-                      <div className="text-sm font-semibold text-gray-800 mb-1 flex justify-between">
+                      <div className="text-sm font-semibold text-gray-800 bg-gray-50 dark:bg-[#17181d] mb-1 flex justify-between">
                         <span>Win Rate</span>
                         <span>{strategy.WinRate ?? "0"}%</span>
                       </div>
-                      <div className="w-full h-2 bg-gray-200 rounded-full mb-4">
+                      <div className="w-full h-2 bg-gray-200 dark:bg-[#17181d] rounded-full mb-4">
                         <div
                           className="h-2 bg-green-500 rounded-full"
                           style={{ width: `${strategy.WinRate ?? 0}%` }}
@@ -699,7 +699,7 @@ export default function Strategies() {
                       </div>
 
                       {/* Meta info */}
-                      <div className="flex flex-col gap-2 bg-gray-50 rounded-xl p-4 text-sm text-gray-700 mb-4">
+                      <div className="flex flex-col gap-2 bg-gray-50 dark:bg-[#17181d] rounded-xl p-4 text-sm text-gray-700 mb-4">
                         <div className="flex justify-between">
                           <div className="text-gray-500">Max Drawdown</div>
                           <div className="font-semibold">
@@ -721,7 +721,7 @@ export default function Strategies() {
                               ? "secondary"
                               : "secondary"
                           }
-                          className={`w-full text-sm font-medium py-2 px-4 rounded-md !bg-[#0e65f2] hover:!bg-[#0d5ce8] ${!deployedStrategyNames.includes(strategy.name)
+                          className={`w-full text-sm font-medium py-2 px-4 rounded-md !bg-[#0e65f2] hover:!bg-[#0d5ce8] dark:!bg-[#0e65f2] dark:hover:!bg-[#0d5ce8] ${!deployedStrategyNames.includes(strategy.name)
                             ? "opacity-50 cursor-not-allowed"
                             : ""
                             }`}
@@ -741,7 +741,7 @@ export default function Strategies() {
                               ? "destructive"
                               : "default"
                           }
-                          className="w-full text-sm font-medium py-2 px-4 rounded-md transition-colors duration-150"
+                          className="w-full text-sm font-medium py-2 px-4 rounded-md transition-colors duration-150 dark:!bg-[#0e65f2] dark:hover:!bg-[#0d5ce8]"
                           onClick={() => handleStrategyToggle(strategy.name)}
                         >
                           {deployedStrategyNames.includes(strategy.name)
