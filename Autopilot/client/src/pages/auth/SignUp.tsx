@@ -287,8 +287,7 @@ export default function SignUp() {
 
           <Button
             type="button"
-            variant="outline"
-            className="w-full"
+            className="w-full bg-background border hover:bg-[#06a57f]"
             onClick={handleGoogleSignIn}
             disabled={isLoading}
           >

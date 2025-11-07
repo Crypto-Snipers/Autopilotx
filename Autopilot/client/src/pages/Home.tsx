@@ -12,7 +12,7 @@ import DeployedStrategies from "@/components/DeployedStrategies";
 import CryptoSniperWelcome from "@/components/CryptoSniperWelcome";
 import { useToast } from "@/hooks/use-toast";
 import { Switch } from "@/components/ui/switch"
-import { ChevronDown, RefreshCcw, TrendingUp } from "lucide-react";
+import { TrendingUp } from "lucide-react";
 
 import { useQueryClient } from "@tanstack/react-query";
 import CryptoMarketOverview from "@/components/CryptoMarketOverview";
@@ -524,9 +524,8 @@ export default function Home() {
         <main className="p-2 md:p-4">
           <div className="flex justify-between w-full min-h-0">
             {/* user connection here flex-col lg:flex-row gap-6 */}
-            <div ref={scrollRef} className="basis-[63%] flex flex-col min-h-0 max-h-[calc(100vh-140px)] overflow-y-auto snap-y snap-mandatory scroll-smooth pr-4 custom-scrollbar">
+            <div ref={scrollRef} className="basis-[70%] flex flex-col min-h-0 max-h-[calc(100vh-140px)] overflow-y-auto snap-y snap-mandatory scroll-smooth pr-4 custom-scrollbar">
               {brokerIsActive === "true" ? (
-                
                 <div className="p-2 bg-gradient-to-br from-blue-50 to-purple-50 dark:bg-muted flex items-center justify-center">
                                   <Card className="w-full max-w-5xl bg-white/80 dark:bg-background backdrop-blur-sm border-0 shadow-xl">
                                     <CardContent className="p-0">
@@ -710,7 +709,7 @@ export default function Home() {
                 <CryptoMarketOverview />
               </div>
             </div>
-            <div className="basis-[35%] h-auto sticky top-0">
+            <div className="basis-[29%] h-auto sticky top-0">
               <DeployedStrategies />
             </div>
 

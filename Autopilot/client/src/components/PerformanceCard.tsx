@@ -234,11 +234,6 @@ const PerformanceCard: React.FC<PerformanceCardProps> = ({ data, showMarker = fa
                 return;
             }
 
-            // const baseUrl = import.meta.env.VITE_API_URL || '';
-            // const apiUrl = baseUrl && baseUrl.startsWith('http')
-            //     ? new URL('/api/add-strategy', baseUrl)
-            //     : new URL('/api/add-strategy', window.location.origin);
-
 
             // Build query string safely
             const params = new URLSearchParams({
@@ -246,10 +241,6 @@ const PerformanceCard: React.FC<PerformanceCardProps> = ({ data, showMarker = fa
                 strategy_name: data.name,
                 multiplier: String(multiplier)
             });
-            // const params = new URLSearchParams();
-            // params.append('email', user.email);
-            // params.append('strategy_name', data.name);
-            // params.append('multiplier', String(multiplier));
 
             // Api call
             const response = await apiRequest<{ status: string; message: string }>(

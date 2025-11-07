@@ -98,7 +98,7 @@ const Header = () => (
 
 // Ripple Grid for Hero Section
 const RippleGrid = () => {
-  const lines = 7;
+  const lines = 9;
   return (
     <div className="absolute inset-0 grid-container -z-10">
       {/* Vertical lines */}
@@ -171,6 +171,8 @@ const HeroSection = () => (
                     Future of crypto trading
                 </span>
             </div>
+            <div className="absolute -left-16 -top-16 w-72 h-72 bg-[#06a57f]/10 blur-3xl rounded-full"></div>
+            
             <h1 className="text-4xl sm:text-5xl font-bold text-white leading-tight">
                 Deploy Smart Strategies. <br className="hidden sm:block" /> Trade Automatically. <br className="hidden sm:block" /> Earn Profit.
             </h1>
@@ -191,7 +193,11 @@ const HeroSection = () => (
 
         {/* Right Image with Ripple Grid */}
         <div className="flex-1 flex justify-center mt-10 md:mt-0 relative z-10 w-full">
+          <div className="absolute -center-16 -top-16 w-72 h-72 bg-[#06a57f]/10 blur-3xl rounded-full"></div>
             <RippleGrid />
+            <div className="absolute -center-16 -top-16 w-72 h-72 bg-[#06a57f]/10 blur-2xl rounded-full"></div>
+            <div className="absolute -center-16 -bottom-16 w-72 h-72 bg-[#06a57f]/10 blur-2xl rounded-full"></div>
+            
             <img
                 src={dashboard}
                 alt="Crypto Trading Dashboard"
@@ -254,7 +260,7 @@ const StrategiesSection = () => {
                 </svg>
             </div>
             
-            <h1 className="text-3xl sm:text-4xl font-bold mb-10 text-center tracking-tight drop-shadow-lg z-10">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-center tracking-tight drop-shadow-lg z-10">
                 Proven Strategies at Your Fingertips
             </h1>
             <p className="text-center mt-6 text-base sm:text-lg text-slate-400 max-w-3xl mx-auto">
@@ -305,12 +311,14 @@ const HowItWorksSection = () => {
         { icon: <TrendingUp size={20} />, title: "Start Profiting", description: "Activate your chosen strategy and let our automated system handle the trades for you." },
     ];
     return (
-        <div className="text-center bg-[#162B32]/50 py-20 sm:py-24 px-4 sm:px-8">
+        <div className="text-center py-20 sm:py-24 px-4 sm:px-8">
+            <div className="absolute -center-16 -top-16 w-72 h-72 bg-[#06a57f]/10 blur-3xl rounded-full"></div>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white">Transparent. Powerful.</h2>
             <p className="mt-6 text-base sm:text-lg text-slate-400 max-w-3xl mx-auto">
                 We believe in full transparency. Dive deep into the historical performance of every strategy. Analyze metrics, understand the logic, and trade with confidence.
             </p>
-            <div className="mt-16 max-w-6xl mx-auto bg-[#162B32]/50 border border-slate-800 rounded-2xl p-6 sm:p-8 md:p-12 relative overflow-hidden">
+            {/* <div className="mt-16 max-w-6xl mx-auto bg-[#162B32]/50 border border-slate-800 rounded-2xl p-6 sm:p-8 md:p-12 relative overflow-hidden"> */}
+            <div className="mt-16 max-w-6xl mx-auto bg-[#162B32]/50 border border-slate-800 rounded-2xl p-6 sm:p-8 md:p-12 relative overflow-hidden shadow-xl shadow-green-500/10">
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12">
                     {features.map((feature, index) => (
                         <div key={index} className="text-left">
@@ -341,7 +349,7 @@ const TrustSection = () => {
     ];
     return (
         <div className="max-w-6xl mx-auto px-4 sm:px-8">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
                 <div className="relative text-center lg:text-left">
                     <div className="absolute -left-16 -top-16 w-72 h-72 bg-[#06a57f]/10 blur-3xl rounded-full"></div>
                     <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white relative">Why trust us?</h2>
@@ -394,8 +402,8 @@ const Footer = () => {
                     <p className="text-slate-500 text-xs mt-2">&copy; {new Date().getFullYear()} AutopilotX - All rights reserved.</p>
                 </div>
                 <div>
-                  <h4 className="font-bold text-white mb-4">Follow Us</h4>
-                  <div className="flex items-start justify-center gap-8 text-slate-400">
+                  <h4 className="font-bold text-[#06a57f] mb-4">Follow Us</h4>
+                  <div className="flex items-start justify-center gap-8 text-slate-200">
                       <a href="#" className="flex flex-col items-center gap-2 hover:text-white transition-colors">
                         <YoutubeIcon />
                         <span className="text-xs">YouTube</span>
@@ -439,7 +447,7 @@ export default function App() {
 
           <div className="relative z-10">
             <Header />
-            <main className="flex flex-col gap-20 py-20 md:gap-28 md:py-28">
+            <main className="flex flex-col gap-20 py-20 md:gap-28 md:py-16">
               <AnimatedSection>
                 <HeroSection />
               </AnimatedSection>

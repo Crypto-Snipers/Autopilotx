@@ -57,7 +57,8 @@ export default function Lowheader() {
         {cryptoPrices?.map((crypto) => (
           <span key={crypto.symbol} className="font-mono inline-flex items-center gap-1 text-[#1a785f] dark:text-white">
             {crypto.symbol}:
-            <span className={crypto.change >= 0 ? "text-green-600 dark:text-[#00ed64]" : "text-red-500"}>
+            {/* <span className={crypto.change >= 0 ? "text-green-600 dark:text-[#00ed64]" : "text-red-500"}> */}
+            <span className={crypto.change >= 0 ? "text-[#06a57f] dark:text-[#06a57f]" : "text-red-500"}>
               {crypto.price.toFixed(2)} ({crypto.change >= 0 ? "+" : ""}
               {crypto.change.toFixed(2)}%)
             </span>
@@ -67,13 +68,15 @@ export default function Lowheader() {
       {/* Contact Options */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 text-sm">
         <a
-          href="mailto:support@thecryptosnipers.com"
-          className="text-[#1a785f] dark:text-white hover:text-gray-900 flex items-center"
+          href="mailto:support@autopilotx.com"
+          className="text-[#1a785f] dark:text-white hover:text-[#1a785f]/80 flex items-center"
         >
-          <MessageSquare className="w-4 h-4 mr-1 text-[#1a785f] dark:text-white" />
-          support@thecryptosnipers.com
+          <MessageSquare className="w-4 h-4 mr-1 mt-2 text-[#1a785f] dark:text-white" />
+          support@autopilotx.com
         </a>
       </div>
     </div>
   );
 }
+
+
