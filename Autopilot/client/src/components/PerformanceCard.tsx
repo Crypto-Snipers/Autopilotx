@@ -234,11 +234,6 @@ const PerformanceCard: React.FC<PerformanceCardProps> = ({ data, showMarker = fa
                 return;
             }
 
-            // const baseUrl = import.meta.env.VITE_API_URL || '';
-            // const apiUrl = baseUrl && baseUrl.startsWith('http')
-            //     ? new URL('/api/add-strategy', baseUrl)
-            //     : new URL('/api/add-strategy', window.location.origin);
-
 
             // Build query string safely
             const params = new URLSearchParams({
@@ -246,10 +241,6 @@ const PerformanceCard: React.FC<PerformanceCardProps> = ({ data, showMarker = fa
                 strategy_name: data.name,
                 multiplier: String(multiplier)
             });
-            // const params = new URLSearchParams();
-            // params.append('email', user.email);
-            // params.append('strategy_name', data.name);
-            // params.append('multiplier', String(multiplier));
 
             // Api call
             const response = await apiRequest<{ status: string; message: string }>(
@@ -303,18 +294,18 @@ const PerformanceCard: React.FC<PerformanceCardProps> = ({ data, showMarker = fa
                         <p className="text-sm text-gray-500 dark:text-gray-400">{data.type}</p>
                     </div>
                     <div className="flex space-x-2">
-                        {data.ETH && <span className="bg-[#06a57f] text-white text-xs px-2 py-1 rounded">ETH</span>}
-                        {data.BTC && <span className="bg-[#06a57f] text-white text-xs px-2 py-1 rounded">BTC</span>}
+                        {data.ETH && <span className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">ETH</span>}
+                        {data.BTC && <span className="bg-orange-100 text-orange-800 text-xs px-2 py-1 rounded">BTC</span>}
                         {data.SOL && <span className="bg-purple-100 text-purple-800 text-xs px-2 py-1 rounded">SOL</span>}
                     </div>
                 </div>
                 {/* <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">{data.description}</p> */}
                 <div className="flex space-x-4 mb-4">
                     <div className="text-sm">
-                        <span className="text-[#06a57f] font-medium">Leverage: {data.leverage}</span>
+                        <span className="text-[#06C10F] font-medium">Leverage: {data.leverage}</span>
                     </div>
                     <div className="text-sm">
-                        <span className="text-white font-medium">Margin: ${data.margin} <span className='text-black ml-1 mr-1'>|</span> ₹50,000</span>
+                        <span className="text-red-500 font-medium">Margin: ${data.margin} <span className='text-black ml-1 mr-1'>|</span> ₹50,000</span>
                     </div>
                 </div>
 
@@ -328,7 +319,7 @@ const PerformanceCard: React.FC<PerformanceCardProps> = ({ data, showMarker = fa
                     <span>Win Rate</span>
                     <span>{data.WinRate ?? "0"}%</span>
                 </div>
-                <div className="w-full h-2 bg-gray-100 rounded-full mb-4">
+                <div className="w-full h-2 bg-gray-200 rounded-full mb-4">
                     <div
                         className="h-2 bg-[#06a57f] rounded-full"
                         style={{ width: `${data.WinRate ?? 0}%` }}
