@@ -234,6 +234,11 @@ const PerformanceCard: React.FC<PerformanceCardProps> = ({ data, showMarker = fa
                 return;
             }
 
+            // const baseUrl = import.meta.env.VITE_API_URL || '';
+            // const apiUrl = baseUrl && baseUrl.startsWith('http')
+            //     ? new URL('/api/add-strategy', baseUrl)
+            //     : new URL('/api/add-strategy', window.location.origin);
+
 
             // Build query string safely
             const params = new URLSearchParams({
@@ -241,6 +246,10 @@ const PerformanceCard: React.FC<PerformanceCardProps> = ({ data, showMarker = fa
                 strategy_name: data.name,
                 multiplier: String(multiplier)
             });
+            // const params = new URLSearchParams();
+            // params.append('email', user.email);
+            // params.append('strategy_name', data.name);
+            // params.append('multiplier', String(multiplier));
 
             // Api call
             const response = await apiRequest<{ status: string; message: string }>(
@@ -284,116 +293,185 @@ const PerformanceCard: React.FC<PerformanceCardProps> = ({ data, showMarker = fa
         }
     };
 
+    const PerformanceGraph = ({ showMarker = false }: { showMarker?: boolean }) => {
+  return (
+    <div className="bg-black px-3 pt-4 pb-2 rounded-t-2xl relative h-[140px]">
+      <svg
+        viewBox="0 0 300 200"
+        xmlns="http://www.w3.org/2000/svg"
+        className="w-full h-full"
+      >
+        <defs>
+          <linearGradient id="greenGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stopColor="#06a57f" stopOpacity="0.6" />
+            <stop offset="100%" stopColor="#06a57f" stopOpacity="0.1" />
+          </linearGradient>
+        </defs>
+
+        <path
+          d="M 50,180 
+             L 80,160 
+             L 120,140 
+             L 170,40 
+             L 200,130 
+             L 240,80 
+             L 280,110 
+             L 280,190 
+             L 50,190 Z"
+          fill="url(#greenGradient)"
+        />
+        <path
+          d="M 50,180 
+             L 80,160 
+             L 120,140 
+             L 170,40 
+             L 200,130 
+             L 240,80 
+             L 280,110"
+          fill="none"
+          stroke="#06a57f"
+          strokeWidth="3"
+        />
+
+        {showMarker && (
+          <g>
+            <line
+              x1="210"
+              y1="20"
+              x2="210"
+              y2="190"
+              stroke="#06a57f"
+              strokeWidth="2"
+              strokeDasharray="4"
+            />
+            <rect x="190" y="5" width="40" height="18" rx="4" fill="#06a57f" />
+            <text
+              x="210"
+              y="19"
+              fontSize="10"
+              fill="white"
+              textAnchor="middle"
+            >
+              1 Mar
+            </text>
+          </g>
+        )}
+      </svg>
+    </div>
+  );
+};
+
+
 
     return (
         <>
             <div className="bg-white dark:bg-[#17181d] rounded-lg shadow-sm p-6 w-full border border-gray-500 dark:border-gray-800">
-                <div className="flex justify-between items-start mb-2">
-                    <div>
-                        <h3 className="text-lg font-medium text-gray-800 dark:text-white">{data.name}</h3>
-                        <p className="text-sm text-gray-500 dark:text-gray-400">{data.type}</p>
-                    </div>
-                    <div className="flex space-x-2">
-                        {data.ETH && <span className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">ETH</span>}
-                        {data.BTC && <span className="bg-orange-100 text-orange-800 text-xs px-2 py-1 rounded">BTC</span>}
-                        {data.SOL && <span className="bg-purple-100 text-purple-800 text-xs px-2 py-1 rounded">SOL</span>}
-                    </div>
+            {/* 🟦 Performance Graph at the top */}
+            <PerformanceGraph showMarker={showMarker} />
+
+            {/* 🧠 Strategy Info */}
+            <div className="mt-4">
+            <h3 className="text-lg font-medium text-gray-800 dark:text-white">{data.name}</h3>
+            <p className="text-sm text-gray-500 dark:text-gray-400">{data.type}</p>
+            </div>
+
+            {/* 🟩 Crypto Badges below graph */}
+            <div className="flex gap-2 mt-3 mb-4">
+            {data.ETH && <span className="bg-[#06a57f] text-white text-xs px-3 py-1 rounded-full">ETH</span>}
+            {data.BTC && <span className="bg-[#06a57f] text-white text-xs px-3 py-1 rounded-full">BTC</span>}
+            {data.SOL && <span className="bg-purple-100 text-purple-800 text-xs px-3 py-1 rounded-full">SOL</span>}
+            </div>
+
+            {/* Leverage + Margin */}
+            <div className="flex space-x-4 mb-4">
+                <div className="text-sm">
+                <span className="text-[#06a57f] font-medium">Leverage: {data.leverage}</span>
                 </div>
-                {/* <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">{data.description}</p> */}
-                <div className="flex space-x-4 mb-4">
-                    <div className="text-sm">
-                        <span className="text-[#06C10F] font-medium">Leverage: {data.leverage}</span>
-                    </div>
-                    <div className="text-sm">
-                        <span className="text-red-500 font-medium">Margin: ${data.margin} <span className='text-black ml-1 mr-1'>|</span> ₹50,000</span>
-                    </div>
-                </div>
-
-                {/* Description */}
-                <p className="text-sm text-gray-700 dark:text-gray-300 mb-3">
-                    {data.description}
-                </p>
-
-                {/* Win Rate */}
-                <div className="text-sm font-semibold text-gray-800 dark:text-white mb-1 flex justify-between">
-                    <span>Win Rate</span>
-                    <span>{data.WinRate ?? "0"}%</span>
-                </div>
-                <div className="w-full h-2 bg-gray-200 rounded-full mb-4">
-                    <div
-                        className="h-2 bg-[#06a57f] rounded-full"
-                        style={{ width: `${data.WinRate ?? 0}%` }}
-                    />
-                </div>
-
-                {/* Meta info */}
-                <div className="flex flex-col gap-2 bg-muted rounded-xl p-4 text-sm text-foreground mb-4">
-                    <div className="flex justify-between">
-                        <div className="text-gray-500 dark:text-gray-400">Max Drawdown</div>
-                        <div className="font-semibold">
-                            {data.MaxDrawdown ?? "0"}%
-                        </div>
-                    </div>
-                    <div className="flex justify-between">
-                        <div className="text-gray-500 dark:text-gray-300">Total Trades:</div>
-                        <div className="font-semibold">
-                            {data.TotalTrades ?? "0"}
-                        </div>
-                    </div>
-                </div>
-
-                <div className="flex items-center gap-2 w-full">
-                    <div className="flex items-center gap-2 w-1/2">
-                        <button
-                            className="inline-flex items-center justify-center gap-1 whitespace-nowrap text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-background h-10 w-full border border-[#06a57f] text-[#06a57f] font-medium py-2 rounded-full transition-colors duration-200 hover:bg-[#06a57f] hover:text-white"
-                            onClick={handleDeployStrategy}
-                            disabled={isCongratsPopupOpen}
-                        >
-                            Deploy Strategy
-                        </button>
-                    </div>
-
-                    <div className="flex items-center justify-center w-1/2 border border-[#06a57f] rounded-full px-4 h-10">
-                        <div className="text-sm font-semibold text-[#06a57f]">Multiplier</div>
-                        <input
-                            type="number"
-                            min={1}
-                            max={50}
-                            step={1}
-                            className="w-16 text-center font-semibold text-sm text-[#06a57f] focus:outline-none ml-2 dark:bg-[#17181d]"
-                            value={multiplier}
-                            onChange={e => setMultiplier(Number(e.target.value))}
-                            disabled={isCongratsPopupOpen}
-                        />
-                    </div>
-
-                    {/* Configure button */}
-                    <div>
-                        {(role === 'admin' || role === 'superadmin') && (
-                            <button
-                                onClick={handleOpenEdit}
-                                className="cursor-pointer"
-                            >
-                                <Settings className='text-green-600' />
-                            </button>
-                        )}
-                    </div>
+                <div className="text-sm">
+                <span className="text-white font-medium">
+                    Margin: ${data.margin} <span className="text-black ml-1 mr-1">|</span> ₹50,000
+                </span>
                 </div>
             </div>
 
-            {StrategyData && (
-                <EditStrategyModal
-                    open={open}
-                    onOpenChange={setOpen}
-                    initial={StrategyData}
-                    onSave={(updated) => {
-                        setStrategyData(updated) // Update state after saving
-                    }}
-                />
-            )}
-            <CongratulationsPopup isOpen={isCongratsPopupOpen} onClose={() => setIsCongratsPopupOpen(false)} message='deployed' />
-        </>
-    );
-};
+            {/* Description */}
+            <p className="text-sm text-gray-700 dark:text-gray-300 mb-3">{data.description}</p>
 
+            {/* Win Rate */}
+            <div className="text-sm font-semibold text-gray-800 dark:text-white mb-1 flex justify-between">
+                <span>Win Rate</span>
+                <span>{data.WinRate ?? "0"}%</span>
+            </div>
+            <div className="w-full h-2 bg-gray-100 rounded-full mb-4">
+                <div
+                className="h-2 bg-[#06a57f] rounded-full"
+                style={{ width: `${data.WinRate ?? 0}%` }}
+                />
+            </div>
+
+            {/* Meta info */}
+            <div className="flex flex-col gap-2 bg-muted rounded-xl p-4 text-sm text-foreground mb-4">
+                <div className="flex justify-between">
+                <div className="text-gray-500 dark:text-gray-400">Max Drawdown</div>
+                <div className="font-semibold">{data.MaxDrawdown ?? "0"}%</div>
+                </div>
+                <div className="flex justify-between">
+                <div className="text-gray-500 dark:text-gray-300">Total Trades:</div>
+                <div className="font-semibold">{data.TotalTrades ?? "0"}</div>
+                </div>
+            </div>
+
+            {/* Deploy Section */}
+            <div className="flex items-center gap-2 w-full">
+                <div className="flex items-center gap-2 w-1/2">
+                <button
+                    className="inline-flex items-center justify-center gap-1 whitespace-nowrap text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-background h-10 w-full border border-[#06a57f] text-[#06a57f] font-medium py-2 rounded-full transition-colors duration-200 hover:bg-[#06a57f] hover:text-white"
+                    onClick={handleDeployStrategy}
+                    disabled={isCongratsPopupOpen}
+                >
+                    Deploy Strategy
+                </button>
+                </div>
+
+                <div className="flex items-center justify-center w-1/2 border border-[#06a57f] rounded-full px-4 h-10">
+                <div className="text-sm font-semibold text-[#06a57f]">Multiplier</div>
+                <input
+                    type="number"
+                    min={1}
+                    max={50}
+                    step={1}
+                    className="w-16 text-center font-semibold text-sm text-[#06a57f] focus:outline-none ml-2 dark:bg-[#17181d]"
+                    value={multiplier}
+                    onChange={(e) => setMultiplier(Number(e.target.value))}
+                    disabled={isCongratsPopupOpen}
+                />
+                </div>
+
+                {/* ⚙️ Configure button (admins only) */}
+                {(role === "admin" || role === "superadmin") && (
+                <button onClick={handleOpenEdit} className="cursor-pointer">
+                    <Settings className="text-green-600" />
+                </button>
+                )}
+            </div>
+            </div>
+
+            {/* Modals */}
+            {StrategyData && (
+            <EditStrategyModal
+                open={open}
+                onOpenChange={setOpen}
+                initial={StrategyData}
+                onSave={(updated) => setStrategyData(updated)}
+            />
+            )}
+            <CongratulationsPopup
+            isOpen={isCongratsPopupOpen}
+            onClose={() => setIsCongratsPopupOpen(false)}
+            message="deployed"
+            />
+        </>
+        );
+
+    }
 export default PerformanceCard;
