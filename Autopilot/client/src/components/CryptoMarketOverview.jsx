@@ -200,7 +200,7 @@ const CryptoCard = ({
         <span
           className={`text-xs font-medium px-2 py-1 rounded-full border ${bullish
             ? "bg-emerald-500/10 text-emerald-600 border-emerald-500/20"
-            : "bg-red-500/10 text-red-600 border-red-500/20"
+            : "bg-green-500/10 text-black dark:text-white border-green-500/20"
             }`}
         >
           {bullish ? "Bullish" : "Bearish"}
@@ -208,11 +208,11 @@ const CryptoCard = ({
       </div>
 
       <div className="mt-2 mb-3 flex items-center gap-3">
-        <div className="text-3xl font-bold text-slate-900 dark:text-foreground">
+        <div className="text-lg font-bold text-slate-900 dark:text-foreground">
           ${formatNumber(price)}
         </div>
         <div
-          className={`text-sm font-medium flex items-center gap-1 ${bullish ? "text-emerald-500" : "text-red-500"
+          className={`text-sm font-medium flex items-center gap-1 ${bullish ? "text-emerald-500" : "text-black dark:text-white"
             }`}
         >
           <svg width="14" height="14" viewBox="0 0 24 24" className={bullish ? "" : "rotate-180"}>

@@ -199,7 +199,6 @@ export default function Header() {
 
 
         <div className="flex items-center space-x-4">
-          {/* --- CHANGE: Applied theme-aware styles to the button and icons --- */}
           <div className="bg-muted hover:bg-[#1a785f] w-7 h-7 rounded-full flex items-center justify-center">
             <button
               onClick={toggleTheme}
@@ -250,7 +249,7 @@ export default function Header() {
                         <p className="text-sm text-red-500 mb-2">Error: {notificationsError.message}</p>
                         <button
                           onClick={() => window.location.reload()}
-                          className="text-xs text-blue-500 hover:text-blue-700"
+                          className="text-xs text-green-600 hover:text-green-800"
                         >
                           Retry
                         </button>
@@ -293,7 +292,7 @@ export default function Header() {
                   className="w-8 h-8 rounded-full object-cover"
                 />
               ) : (
-                <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-medium">
+                <div className="w-8 h-8 rounded-full bg-green-500/40 flex items-center justify-center text-green-600 font-medium">
                   {user?.identities?.[0]?.identity_data?.full_name?.substring(0, 2).toUpperCase() || 'U'}
                 </div>
               )}

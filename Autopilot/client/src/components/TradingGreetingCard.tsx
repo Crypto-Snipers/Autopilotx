@@ -76,30 +76,10 @@ const TradingGreetingCard = ({ userName, brokerName }: TradingGreetingCardProps)
       const bn = getSessionItem('broker_name', '');
       const api_verified = getSessionItem('api_verified', '');
       const email = getSessionItem('signupEmail', '');
-      // const pnlValue = getSessionItem('pnl', 0);
-
-      // console.log('Session storage values:', {
-      //   broker_name: bn,
-      //   api_verified,
-      //   email,
-      //   // pnl: pnlValue,
-      //   brokerName
-      // });
 
       if (email) {
         setEmail(email);
       }
-
-      // if (pnlValue) {
-      //   try {
-      //     const parsedPnl = parseFloat(pnlValue);
-      //     if (!isNaN(parsedPnl)) {
-      //       setSessionPnl(parsedPnl);
-      //     }
-      //   } catch (error) {
-      //     console.error('Error parsing PNL value:', error);
-      //   }
-      // }
 
       // Check all possible conditions that indicate a broker is connected
       if (api_verified === 'true' || bn || brokerName) {
@@ -198,7 +178,7 @@ const TradingGreetingCard = ({ userName, brokerName }: TradingGreetingCardProps)
   }, [balanceData]);
 
   return (
-    <div className="bg-background w-full rounded-3xl shadow-sm">
+    <div className="bg-background w-full rounded-2xl drop-shadow-lg">
       {/* Greeting */}
       <div className="flex justify-between items-start py-5 px-6">
         <div>
@@ -228,7 +208,7 @@ const TradingGreetingCard = ({ userName, brokerName }: TradingGreetingCardProps)
                 >
                   <div className="flex items-center gap-2">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" data-palette="DeltaIndiaLogoMobile"><path d="M7.80664 8.00006L15.6132 12.0001L23.4197 8.00006L7.80664 0V8.00006Z" fill="#FD7D02"></path><path d="M7.80762 15.9999V24L23.4207 15.9999L15.6141 11.9999L7.80762 15.9999Z" fill="url(#paint0_linear_552_5865)"></path><path d="M23.4208 16.0002V8.00012L15.6143 12.0002L23.4208 16.0002Z" fill="#2CB72C"></path><path d="M7.80652 8.00012V16.0002L0 12.0002L7.80652 8.00012Z" fill="#FF9300"></path><defs><linearGradient id="paint0_linear_552_5865" x1="18.0135" y1="8.62916" x2="9.25394" y2="16.5192" gradientUnits="userSpaceOnUse"><stop stop-color="#168016"></stop><stop offset="1" stop-color="#2CB72C"></stop></linearGradient></defs></svg>
-                    <span>Connect Delta</span>
+                    <span className='text-sm'>Connect Delta</span>
                   </div>
                   <ChevronDown className={`transition-transform duration-300 ${openDropdown === 'delta' ? 'rotate-180' : ''}`} />
                 </button>
@@ -261,7 +241,7 @@ const TradingGreetingCard = ({ userName, brokerName }: TradingGreetingCardProps)
               <div className="relative" ref={connectCoinDcxRef}>
                 <button
                   onClick={() => handleToggle('coindcx')}
-                  className="text-white px-2 py-2 rounded-full font-semibold flex items-center justify-center gap-2 hover:bg-[#1a785f] transition-all duration-300 border-2 border-gray-200 w-45"
+                  className="text-white px-2 py-2 rounded-full font-semibold flex items-center justify-center gap-2 hover:bg-[#29a181] transition-all duration-300 border-2 border-gray-200 w-45"
                 >
                   <div className="flex items-center gap-2">
                     <img
@@ -269,7 +249,7 @@ const TradingGreetingCard = ({ userName, brokerName }: TradingGreetingCardProps)
                       alt="CoinDCX Logo"
                       className="h-7 w-7"
                     />
-                    <span>Connect CoinDCX</span>
+                    <span className='text-sm'>Connect CoinDCX</span>
                   </div>
                   <ChevronDown className={`transition-transform duration-300 ${openDropdown === 'coindcx' ? 'rotate-180' : ''}`} />
                 </button>
